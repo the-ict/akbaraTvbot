@@ -28,22 +28,22 @@ bot.onText(/\/start/, (message) => {
     );
 });
 
-bot.on("message", (message) => {
-    console.log("Received message:", message);
+// bot.on("message", (message) => {
+//     console.log("Received message:", message);
 
-    if (message?.web_app_data) {
-        try {
-            const webAppData = JSON.parse(message.web_app_data.data);
-            console.log("Web App Data:", webAppData);
+//     if (message?.web_app_data) {
+//         try {
+//             const webAppData = JSON.parse(message.web_app_data.data);
+//             console.log("Web App Data:", webAppData);
 
-            // WebApp ma'lumotlarini yuborish
-            bot.sendMessage(message.chat.id, `Web App ma'lumotlari qabul qilindi: ${JSON.stringify(webAppData, null, 2)}`);
-        } catch (error) {
-            console.error("JSON parse error:", error);
-            bot.sendMessage(message.chat.id, "Xatolik: Web App ma'lumotlarini qayta ishlashda muammo yuz berdi.");
-        }
-    }
-});
+//             // WebApp ma'lumotlarini yuborish
+//             bot.sendMessage(message.chat.id, `Web App ma'lumotlari qabul qilindi: ${JSON.stringify(webAppData, null, 2)}`);
+//         } catch (error) {
+//             console.error("JSON parse error:", error);
+//             bot.sendMessage(message.chat.id, "Xatolik: Web App ma'lumotlarini qayta ishlashda muammo yuz berdi.");
+//         }
+//     }
+// });
 
 bot.on("callback_query", (callbackQuery) => {
     const chatId = callbackQuery.message?.chat.id;
@@ -53,9 +53,7 @@ bot.on("callback_query", (callbackQuery) => {
     selectingLanguage(chatId, String(callbackQuery.data), bot);
 });
 
-bot.on("polling_error", (err) => {
-    console.error("Polling error:", err);
-});
+
 
 
 app.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Response) => {
@@ -71,7 +69,7 @@ app.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Respon
 
         const messageText = getQueryText(user_id) || "OK!";
 
-        bot.sendMessage(user_id, "Malumotlaringiz qabul qilindi !")
+        bot.sendMessage(user_id, messageText)
 
         // await bot.answerWebAppQuery(query_id, {
         //     type: "article",
@@ -93,4 +91,9 @@ const PORT = process.env.PORT || 5122;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+});
+
+
+bot.on("polling_error", (err) => {
+    console.error("Polling error:", err);
 });
