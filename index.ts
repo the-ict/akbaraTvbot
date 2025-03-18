@@ -64,20 +64,23 @@ app.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Respon
 
         if (!query_id || !user_id) {
             res.status(400).json({ error: "Query ID yoki User ID mavjud emas." });
+            return
         }
 
         console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region, user_id, query_id });
 
         const messageText = getQueryText(user_id) || "OK!";
 
-        await bot.answerWebAppQuery(query_id, {
-            type: "article",
-            id: query_id,
-            title: messageText,
-            input_message_content: {
-                message_text: messageText,
-            },
-        });
+        bot.sendMessage(user_id, "Malumotlaringiz qabul qilindi !")
+
+        // await bot.answerWebAppQuery(query_id, {
+        //     type: "article",
+        //     id: query_id,
+        //     title: messageText,
+        //     input_message_content: {
+        //         message_text: messageText,
+        //     },
+        // });
 
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     } catch (error) {
