@@ -66,7 +66,7 @@ app.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Respon
             res.status(400).json({ error: "Query ID yoki User ID mavjud emas." });
         }
 
-        console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region });
+        console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region, user_id, query_id });
 
         const messageText = getQueryText(user_id) || "OK!";
 
@@ -78,12 +78,6 @@ app.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Respon
                 message_text: messageText,
             },
         });
-
-
-
-        await bot.sendMessage(user_id, String(getLoggedInText(user_id)), {
-            reply_markup: keyboards.menuKeyboards(user_id)
-        })
 
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     } catch (error) {
