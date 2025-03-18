@@ -2,7 +2,7 @@ import TelegramBot from "node-telegram-bot-api";
 import { messages } from "./constants/messages";
 import { keyboards } from "./constants/keyboards";
 import selectingLanguage from "./actions/selectingLanguage";
-import { getQueryText } from "./functions/getBotTexts";
+import { getLoggedInText, getQueryText } from "./functions/getBotTexts";
 import express from "express";
 import { Request, Response, Express } from "express"
 import cors from "cors";
@@ -79,7 +79,9 @@ app.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Respon
             },
         });
 
-        await bot.sendMessage(user_id, String(getSignInText(user_id)), {
+
+
+        await bot.sendMessage(user_id, String(getLoggedInText(user_id)), {
             reply_markup: keyboards.menuKeyboards(user_id)
         })
 

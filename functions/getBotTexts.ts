@@ -29,7 +29,6 @@ export const getKeyboards = (userId: number): ReplyKeyboardMarkup => {
                     [{ text: "Qidirish" }, { text: "Top filmlar" }]
                 ],
                 resize_keyboard: true,
-                one_time_keyboard: true,
             };
         } else if (userLang === "en") {
             return {
@@ -37,7 +36,6 @@ export const getKeyboards = (userId: number): ReplyKeyboardMarkup => {
                     [{ text: "Search" }, { text: "Top movies" }]
                 ],
                 resize_keyboard: true,
-                one_time_keyboard: true,
             };
         } else if (userLang === "ru") {
             return {
@@ -45,7 +43,6 @@ export const getKeyboards = (userId: number): ReplyKeyboardMarkup => {
                     [{ text: "Поиск" }, { text: "Лучшие фильмы" }]
                 ],
                 resize_keyboard: true,
-                one_time_keyboard: true,
             };
         }
     }
