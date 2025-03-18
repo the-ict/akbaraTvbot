@@ -1,9 +1,11 @@
-import { InlineKeyboardMarkup } from "node-telegram-bot-api";
+import { InlineKeyboardMarkup, ReplyKeyboardMarkup } from "node-telegram-bot-api";
 import getSignInText from "../functions/getSignInText";
+import { getKeyboards } from "../functions/getBotTexts"
 
 interface IKeyboards {
     startKeyboard: InlineKeyboardMarkup;
     signinKeyboard: (chatId: number) => InlineKeyboardMarkup;
+    menuKeyboards: (userId: number) => ReplyKeyboardMarkup
 }
 
 export const keyboards: IKeyboards = {
@@ -18,7 +20,10 @@ export const keyboards: IKeyboards = {
     },
     signinKeyboard: (chatId) => {
         return {
-            inline_keyboard: [[{ text: String(getSignInText(chatId)), web_app: {url: "https://akbara-input-form.vercel.app/"} }]]
+            inline_keyboard: [[{ text: String(getSignInText(chatId)), web_app: { url: "https://akbara-input-form.vercel.app/" } }]]
         };
+    },
+    menuKeyboards: (userId): ReplyKeyboardMarkup => {
+        return getKeyboards(userId)
     }
 };

@@ -8,6 +8,7 @@ import { Request, Response, Express } from "express"
 import cors from "cors";
 import dotenv from "dotenv"
 import { WebAppRequestBody } from "./constants/types";
+import getSignInText from "./functions/getSignInText";
 
 const app: Express = express();
 
@@ -77,6 +78,10 @@ app.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Respon
                 message_text: messageText,
             },
         });
+
+        await bot.sendMessage(user_id, String(getSignInText(user_id)), {
+            reply_markup: keyboards.menuKeyboards(user_id)
+        })
 
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     } catch (error) {
