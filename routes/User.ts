@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express"
 import { WebAppRequestBody } from "../constants/types";
+import User from "../models/User";
 import bot from "../index"
 import { getQueryText } from "../functions/getBotTexts";
 
@@ -19,22 +20,33 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
 
         const messageText = getQueryText(user_id) || "OK!";
 
-        try {
-            await bot.sendMessage(user_id, messageText);
-        } catch (sendError) {
-            console.error("Xabar yuborishda xatolik:", sendError);
-            res.status(500).json({ error: "Xabar yuborishda xatolik yuz berdi." });
-            return;
-        }
-
         await bot.answerWebAppQuery(query_id, {
             type: "article",
             id: query_id,
-            title: messageText,
+            title: "Registration",
             input_message_content: {
                 message_text: messageText,
             },
         });
+
+        let newUserData = {
+            name,
+            lastName,
+            phone,
+            country,
+            region: "",
+            districts: ""
+        }
+
+        if (region && districts) {
+            newUserData.region = region
+            newUserData.districts = districts
+        }
+
+        const newUser = new User(newUserData)
+        const savedUser = await newUser.save()
+
+        console.log(savedUser, "created user")
 
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     } catch (error) {

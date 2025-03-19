@@ -8,7 +8,6 @@ export interface IUser extends Document {
     region?: string,
     disticts?: string,
     telegram_id: string,
-    telegram_username: string,
 }
 
 const UserSchema: Schema = new mongoose.Schema({
@@ -34,10 +33,6 @@ const UserSchema: Schema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    telegram_username: {
-        type: String,
-        required: true
-    }
 }, { timestamps: true });
 
 const User = mongoose.model<IUser>("User", UserSchema);
