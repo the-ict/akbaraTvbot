@@ -108,3 +108,23 @@ export const getLoggedInText = (userId: number): string | void => {
         }
     }
 }
+
+
+export const getSaveErrorText = (userId: number): string => {
+    if (userState[userId]) {
+        const userLang = userState[userId].lang;
+
+        if (userLang === "uz") {
+            return "Ma'lumotlarni saqlashda xatolik yuz berdi!";
+        } else if (userLang === "en") {
+            return "An error occurred while saving the data!";
+        } else if (userLang === "ru") {
+            return "Произошла ошибка при сохранении данных!";
+        } else {
+            return "Language not supported!";
+        }
+    }
+
+    return "An unexpected error occurred!";
+};
+

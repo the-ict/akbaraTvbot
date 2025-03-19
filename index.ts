@@ -48,7 +48,7 @@ bot.on("message", (message) => {
         } catch (error) {
             console.error("Xatolik:", error);
         }
-    } 
+    }
 });
 
 

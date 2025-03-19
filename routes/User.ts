@@ -2,10 +2,10 @@ import express, { Request, Response } from "express"
 import { WebAppRequestBody } from "../constants/types";
 import User from "../models/User";
 import bot from "../index"
-import { getQueryText } from "../functions/getBotTexts";
+import { getQueryText, getSaveErrorText } from "../functions/getBotTexts";
+import { keyboards } from "../constants/keyboards";
 
 const router = express.Router()
-
 
 router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Response) => {
     try {
@@ -16,11 +16,11 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
             return;
         }
 
-        console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region, user_id, query_id });
-
         const messageText = getQueryText(user_id) || "OK!";
 
-        bot.sendMessage(user_id, `${messageText}: ${name}`)
+        bot.sendMessage(user_id, `${messageText}: ${name}`, {
+            reply_markup: keyboards.menuKeyboards(user_id)
+        })
 
         let newUserData = {
             name,
@@ -38,9 +38,11 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
         }
 
         const newUser = await User.create(newUserData)
-        bot.sendMessage(user_id, `${messageText}: ${newUser.name}`)
 
-        console.log(newUser, "created user")
+        if (!newUser) {
+            bot.sendMessage(user_id, getSaveErrorText(user_id))
+        }
+
 
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     } catch (error) {

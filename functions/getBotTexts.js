@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getQueryText = void 0;
+exports.getSaveErrorText = exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getQueryText = void 0;
 const language_1 = require("../states/language");
 // Bu funksiyaning maqsadi foydalanuvchi uchun kerakli matnni qaytarish
 const getQueryText = (userId) => {
@@ -111,3 +111,22 @@ const getLoggedInText = (userId) => {
     }
 };
 exports.getLoggedInText = getLoggedInText;
+const getSaveErrorText = (userId) => {
+    if (language_1.userState[userId]) {
+        const userLang = language_1.userState[userId].lang;
+        if (userLang === "uz") {
+            return "Ma'lumotlarni saqlashda xatolik yuz berdi!";
+        }
+        else if (userLang === "en") {
+            return "An error occurred while saving the data!";
+        }
+        else if (userLang === "ru") {
+            return "Произошла ошибка при сохранении данных!";
+        }
+        else {
+            return "Language not supported!";
+        }
+    }
+    return "An unexpected error occurred!";
+};
+exports.getSaveErrorText = getSaveErrorText;

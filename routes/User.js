@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const User_1 = __importDefault(require("../models/User"));
 const index_1 = __importDefault(require("../index"));
 const getBotTexts_1 = require("../functions/getBotTexts");
+const keyboards_1 = require("../constants/keyboards");
 const router = express_1.default.Router();
 router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -24,9 +25,10 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             res.status(400).json({ error: "Zaruriy ma'lumotlar yetishmayapti." });
             return;
         }
-        console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region, user_id, query_id });
         const messageText = (0, getBotTexts_1.getQueryText)(user_id) || "OK!";
-        index_1.default.sendMessage(user_id, `${messageText}: ${name}`);
+        index_1.default.sendMessage(user_id, `${messageText}: ${name}`, {
+            reply_markup: keyboards_1.keyboards.menuKeyboards(user_id)
+        });
         let newUserData = {
             name,
             lastName,
@@ -41,8 +43,9 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             newUserData.districts = districts;
         }
         const newUser = yield User_1.default.create(newUserData);
-        index_1.default.sendMessage(user_id, `${messageText}: ${newUser.name}`);
-        console.log(newUser, "created user");
+        if (!newUser) {
+            index_1.default.sendMessage(user_id, (0, getBotTexts_1.getSaveErrorText)(user_id));
+        }
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     }
     catch (error) {
