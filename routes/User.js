@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const User_1 = __importDefault(require("../models/User"));
 const index_1 = __importDefault(require("../index"));
 const getBotTexts_1 = require("../functions/getBotTexts");
 const router = express_1.default.Router();
@@ -25,22 +26,29 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region, user_id, query_id });
         const messageText = (0, getBotTexts_1.getQueryText)(user_id) || "OK!";
-        try {
-            yield index_1.default.sendMessage(user_id, messageText);
-        }
-        catch (sendError) {
-            console.error("Xabar yuborishda xatolik:", sendError);
-            res.status(500).json({ error: "Xabar yuborishda xatolik yuz berdi." });
-            return;
-        }
         yield index_1.default.answerWebAppQuery(query_id, {
             type: "article",
             id: query_id,
-            title: messageText,
+            title: "Registration",
             input_message_content: {
                 message_text: messageText,
             },
         });
+        let newUserData = {
+            name,
+            lastName,
+            phone,
+            country,
+            region: "",
+            districts: ""
+        };
+        if (region && districts) {
+            newUserData.region = region;
+            newUserData.districts = districts;
+        }
+        const newUser = new User_1.default(newUserData);
+        const savedUser = yield newUser.save();
+        console.log(savedUser, "created user");
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     }
     catch (error) {

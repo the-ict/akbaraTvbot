@@ -27,10 +27,6 @@ const UserSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    telegram_username: {
-        type: String,
-        required: true
-    }
 }, { timestamps: true });
 const User = mongoose_1.default.model("User", UserSchema);
 exports.default = User;

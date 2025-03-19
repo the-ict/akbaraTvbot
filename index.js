@@ -42,9 +42,6 @@ bot.on("message", (message) => {
             console.error("Xatolik:", error);
         }
     }
-    else {
-        bot.sendMessage(message.chat.id, "WebApp ma'lumot topilmadi ❌");
-    }
 });
 const PORT = process.env.PORT || 5122;
 app.use("/api/user", User_1.default);
