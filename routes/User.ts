@@ -17,21 +17,10 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
         }
 
         console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region, user_id, query_id });
-        bot.sendMessage(user_id, `Malumotlaringiz saqlandi ${name}`)
 
         const messageText = getQueryText(user_id) || "OK!";
 
-
-        await bot.answerWebAppQuery(query_id, {
-            type: "article",
-            id: query_id,
-            title: "Registration",
-            input_message_content: {
-                message_text: messageText,
-            },
-        });
-
-
+        bot.sendMessage(user_id, `${messageText}: ${name}`)
 
         let newUserData = {
             name,
@@ -48,6 +37,7 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
         }
 
         const newUser = await User.create(newUserData)
+        bot.sendMessage(user_id, `${messageText}: ${newUser.name}`)
 
         console.log(newUser, "created user")
 
