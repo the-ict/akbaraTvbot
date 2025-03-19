@@ -25,6 +25,7 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             return;
         }
         console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region, user_id, query_id });
+        index_1.default.sendMessage(user_id, `Malumotlaringiz saqlandi ${name}`);
         const messageText = (0, getBotTexts_1.getQueryText)(user_id) || "OK!";
         yield index_1.default.answerWebAppQuery(query_id, {
             type: "article",
@@ -47,7 +48,6 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             newUserData.districts = districts;
         }
         const newUser = yield User_1.default.create(newUserData);
-        index_1.default.sendMessage(user_id, `Malumotlaringiz saqlandi ${newUser.name}`);
         console.log(newUser, "created user");
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     }

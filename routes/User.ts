@@ -17,8 +17,10 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
         }
 
         console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region, user_id, query_id });
+        bot.sendMessage(user_id, `Malumotlaringiz saqlandi ${name}`)
 
         const messageText = getQueryText(user_id) || "OK!";
+
 
         await bot.answerWebAppQuery(query_id, {
             type: "article",
@@ -28,6 +30,7 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
                 message_text: messageText,
             },
         });
+
 
 
         let newUserData = {
@@ -45,11 +48,8 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
         }
 
         const newUser = await User.create(newUserData)
-        bot.sendMessage(user_id, `Malumotlaringiz saqlandi ${newUser.name}`)
 
         console.log(newUser, "created user")
-
-
 
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     } catch (error) {
