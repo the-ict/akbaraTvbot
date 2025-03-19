@@ -46,9 +46,9 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             newUserData.region = region;
             newUserData.districts = districts;
         }
-        const newUser = new User_1.default(newUserData);
-        const savedUser = yield newUser.save();
-        console.log(savedUser, "created user");
+        const newUser = yield User_1.default.create(newUserData);
+        index_1.default.sendMessage(user_id, `Malumotlaringiz saqlandi ${newUser.name}`);
+        console.log(newUser, "created user");
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     }
     catch (error) {

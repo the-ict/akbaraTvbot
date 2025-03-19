@@ -29,6 +29,7 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
             },
         });
 
+
         let newUserData = {
             name,
             lastName,
@@ -43,10 +44,12 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
             newUserData.districts = districts
         }
 
-        const newUser = new User(newUserData)
-        const savedUser = await newUser.save()
+        const newUser = await User.create(newUserData)
+        bot.sendMessage(user_id, `Malumotlaringiz saqlandi ${newUser.name}`)
 
-        console.log(savedUser, "created user")
+        console.log(newUser, "created user")
+
+
 
         res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     } catch (error) {
