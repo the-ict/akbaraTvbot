@@ -20,7 +20,7 @@ const UserSchema = new mongoose_1.default.Schema({
     region: {
         type: String,
     },
-    disticts: {
+    districts: {
         type: String,
     },
     telegram_id: {

@@ -33,7 +33,8 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             phone,
             country,
             region: "",
-            districts: ""
+            districts: "",
+            telegram_id: user_id
         };
         if (region && districts) {
             newUserData.region = region;

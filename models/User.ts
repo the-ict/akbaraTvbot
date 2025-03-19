@@ -6,7 +6,7 @@ export interface IUser extends Document {
     phone: string,
     country: string,
     region?: string,
-    disticts?: string,
+    districts?: string,
     telegram_id: string,
 }
 
@@ -26,7 +26,7 @@ const UserSchema: Schema = new mongoose.Schema({
     region: {
         type: String,
     },
-    disticts: {
+    districts: {
         type: String,
     },
     telegram_id: {

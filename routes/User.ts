@@ -28,7 +28,8 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
             phone,
             country,
             region: "",
-            districts: ""
+            districts: "",
+            telegram_id: user_id
         }
 
         if (region && districts) {
