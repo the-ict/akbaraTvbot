@@ -48,9 +48,7 @@ bot.on("message", (message) => {
         } catch (error) {
             console.error("Xatolik:", error);
         }
-    } else {
-        bot.sendMessage(message.chat.id, "WebApp ma'lumot topilmadi ❌");
-    }
+    } 
 });
 
 
