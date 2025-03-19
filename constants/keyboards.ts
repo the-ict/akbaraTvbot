@@ -1,11 +1,12 @@
-import { InlineKeyboardMarkup, ReplyKeyboardMarkup } from "node-telegram-bot-api";
+import { InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup } from "node-telegram-bot-api";
 import getSignInText from "../functions/getSignInText";
-import { getKeyboards } from "../functions/getBotTexts"
+import { getMenuKeyboardsText, getTopFilmsKeyboardsText } from "../functions/getBotTexts"
 
 interface IKeyboards {
     startKeyboard: InlineKeyboardMarkup;
     signinKeyboard: (chatId: number) => InlineKeyboardMarkup;
-    menuKeyboards: (userId: number) => ReplyKeyboardMarkup
+    menuKeyboards: (userId: number) => ReplyKeyboardMarkup;
+    topFilms: (userId: number) => InlineKeyboardMarkup;
 }
 
 export const keyboards: IKeyboards = {
@@ -24,6 +25,9 @@ export const keyboards: IKeyboards = {
         };
     },
     menuKeyboards: (userId): ReplyKeyboardMarkup => {
-        return getKeyboards(userId)
+        return getMenuKeyboardsText(userId)
+    },
+    topFilms: (userId): InlineKeyboardMarkup => {
+        return getTopFilmsKeyboardsText(userId)
     }
 };

@@ -13,5 +13,11 @@ function default_1(userId) {
         else if (language_1.userState[userId].lang == "ru") {
             return "Регистрация";
         }
+        else {
+            return "Ro'yhatdan o'tish";
+        }
+    }
+    else {
+        return "Ro'yhatdan o'tish";
     }
 }

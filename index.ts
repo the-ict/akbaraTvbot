@@ -2,13 +2,12 @@ import TelegramBot from "node-telegram-bot-api";
 import { messages } from "./constants/messages";
 import { keyboards } from "./constants/keyboards";
 import selectingLanguage from "./actions/selectingLanguage";
-import { getLoggedInText, getQueryText } from "./functions/getBotTexts";
 import express from "express";
-import { Request, Response, Express } from "express"
+import { Express } from "express"
 import cors from "cors";
 import dotenv from "dotenv"
-import { WebAppRequestBody } from "./constants/types";
-import getSignInText from "./functions/getSignInText";
+import { connectDb } from "./config/connect";
+import User from "./routes/User"
 
 const app: Express = express();
 
@@ -19,6 +18,7 @@ dotenv.config()
 const TOKEN: string = String(process.env.TOKEN);
 
 const bot = new TelegramBot(TOKEN, { polling: true });
+bot.deleteWebHook()
 
 bot.onText(/\/start/, (message) => {
     bot.sendMessage(
@@ -27,23 +27,6 @@ bot.onText(/\/start/, (message) => {
         { reply_markup: keyboards.startKeyboard }
     );
 });
-
-// bot.on("message", (message) => {
-//     console.log("Received message:", message);
-
-//     if (message?.web_app_data) {
-//         try {
-//             const webAppData = JSON.parse(message.web_app_data.data);
-//             console.log("Web App Data:", webAppData);
-
-//             // WebApp ma'lumotlarini yuborish
-//             bot.sendMessage(message.chat.id, `Web App ma'lumotlari qabul qilindi: ${JSON.stringify(webAppData, null, 2)}`);
-//         } catch (error) {
-//             console.error("JSON parse error:", error);
-//             bot.sendMessage(message.chat.id, "Xatolik: Web App ma'lumotlarini qayta ishlashda muammo yuz berdi.");
-//         }
-//     }
-// });
 
 bot.on("callback_query", (callbackQuery) => {
     const chatId = callbackQuery.message?.chat.id;
@@ -54,46 +37,34 @@ bot.on("callback_query", (callbackQuery) => {
 });
 
 
+bot.on("message", (message) => {
+    if (message?.web_app_data?.data) {
+        try {
+            const data = JSON.parse(message.web_app_data.data);
+            console.log("Qabul qilingan ma'lumot:", data);
 
-
-app.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Response) => {
-    try {
-        const { query_id, user_id, lastName, name, phone, country, districts, region } = req.body;
-
-        if (!query_id || !user_id) {
-            res.status(400).json({ error: "Query ID yoki User ID mavjud emas." });
-            return
+            bot.sendMessage(message.chat.id, "Qabul qilindi ✅");
+            bot.sendMessage(message.chat.id, `Ism: ${data.name}`);
+        } catch (error) {
+            console.error("Xatolik:", error);
         }
-
-        console.log("Qabul qilingan ma'lumotlar:", { lastName, name, phone, country, districts, region, user_id, query_id });
-
-        const messageText = getQueryText(user_id) || "OK!";
-
-        bot.sendMessage(user_id, messageText)
-
-        // await bot.answerWebAppQuery(query_id, {
-        //     type: "article",
-        //     id: query_id,
-        //     title: messageText,
-        //     input_message_content: {
-        //         message_text: messageText,
-        //     },
-        // });
-
-        res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
-    } catch (error) {
-        console.error("Serverda xatolik yuz berdi:", error);
-        res.status(500).json({ error: "Ichki server xatosi", error_: error });
+    } else {
+        bot.sendMessage(message.chat.id, "WebApp ma'lumot topilmadi ❌");
     }
 });
 
+
 const PORT = process.env.PORT || 5122;
+
+app.use("/api/user", User)
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    connectDb()
 });
-
 
 bot.on("polling_error", (err) => {
     console.error("Polling error:", err);
 });
+
+export default bot

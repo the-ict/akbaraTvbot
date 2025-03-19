@@ -1,6 +1,6 @@
 import { userState } from "../states/language"
 
-export default function (userId: number): string | void {
+export default function (userId: number): string {
     if (userState[userId]) {
         if (userState[userId].lang == "uz") {
             return "Ro'yhatdan o'tish"
@@ -10,6 +10,10 @@ export default function (userId: number): string | void {
         }
         else if (userState[userId].lang == "ru") {
             return "Регистрация"
+        } else {
+            return "Ro'yhatdan o'tish"
         }
+    } else {
+        return "Ro'yhatdan o'tish"
     }
 }

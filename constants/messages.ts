@@ -4,6 +4,6 @@ interface IMessages {
 
 export const messages: IMessages = {
     startCommand: (username: string) => {
-        return `@${username}\nAssalomu Alaykum👋🏻\nПривет👋🏻\nHello👋🏻\n\nTilni tanlang!\nВыберите язык!\nSelect language!`
+        return `@${username}\nAssalomu Alaykum👋🏻\nHello👋🏻\nПривет👋🏻\n\nTilni tanlang! 🇺🇿\nSelect language! 🇺🇸\nВыберите язык! 🇷🇺`
     }
 }

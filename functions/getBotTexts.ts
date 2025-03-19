@@ -1,5 +1,5 @@
 import { userState } from "../states/language";
-import { ReplyKeyboardMarkup } from "node-telegram-bot-api";
+import { InlineKeyboardMarkup, ReplyKeyboardMarkup } from "node-telegram-bot-api";
 
 // Bu funksiyaning maqsadi foydalanuvchi uchun kerakli matnni qaytarish
 export const getQueryText = (userId: number) => {
@@ -19,7 +19,7 @@ export const getQueryText = (userId: number) => {
 }
 
 // Bu funksiyaning maqsadi foydalanuvchining tiliga qarab tugmalarni qaytarish
-export const getKeyboards = (userId: number): ReplyKeyboardMarkup => {
+export const getMenuKeyboardsText = (userId: number): ReplyKeyboardMarkup => {
     if (userState[userId]) {
         const userLang = userState[userId].lang;
 
@@ -53,6 +53,45 @@ export const getKeyboards = (userId: number): ReplyKeyboardMarkup => {
         one_time_keyboard: true,
     };
 };
+
+
+export const getTopFilmsKeyboardsText = (userId: number): InlineKeyboardMarkup => {
+    if (userState[userId]) {
+        const userLang = userState[userId].lang;
+
+        if (userLang === "uz") {
+            return {
+                inline_keyboard: [
+                    [{ text: "1. Hind kinosi", callback_data: "hind1" }],
+                    [{ text: "2. Tarjima kinolar", callback_data: "tarjima2" }],
+                    [{ text: "3. Premyeralar", callback_data: "premyera3" }]
+                ],
+            };
+        } else if (userLang === "en") {
+            return {
+                inline_keyboard: [
+                    [{ text: "1. Bollywood Movies", callback_data: "hind1" }],
+                    [{ text: "2. Dubbed Movies", callback_data: "dubbed2" }],
+                    [{ text: "3. Premieres", callback_data: "premiere3" }]
+                ],
+            };
+        } else if (userLang === "ru") {
+            return {
+                inline_keyboard: [
+                    [{ text: "1. Индийские фильмы", callback_data: "hind1" }],
+                    [{ text: "2. Дублированные фильмы", callback_data: "dubbed2" }],
+                    [{ text: "3. Премьеры", callback_data: "premiere3" }]
+                ],
+            };
+        }
+    }
+
+    return {
+        inline_keyboard: [[{ text: "Default button", callback_data: "default" }]],
+    };
+};
+
+
 
 export const getLoggedInText = (userId: number): string | void => {
     if (userState[userId]) {
