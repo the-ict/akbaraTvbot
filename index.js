@@ -12,6 +12,7 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const connect_1 = require("./config/connect");
 const User_1 = __importDefault(require("./routes/User"));
+const topFilms_1 = __importDefault(require("./handlers/topFilms"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -30,17 +31,8 @@ bot.on("callback_query", (callbackQuery) => {
     (0, selectingLanguage_1.default)(chatId, String(callbackQuery.data), bot);
 });
 bot.on("message", (message) => {
-    var _a;
-    if ((_a = message === null || message === void 0 ? void 0 : message.web_app_data) === null || _a === void 0 ? void 0 : _a.data) {
-        try {
-            const data = JSON.parse(message.web_app_data.data);
-            console.log("Qabul qilingan ma'lumot:", data);
-            bot.sendMessage(message.chat.id, "Qabul qilindi ✅");
-            bot.sendMessage(message.chat.id, `Ism: ${data.name}`);
-        }
-        catch (error) {
-            console.error("Xatolik:", error);
-        }
+    if (message.text == "Top filmlar" || message.text == "Top movies" || message.text == "Лучшие фильмы") {
+        (0, topFilms_1.default)(message);
     }
 });
 const PORT = process.env.PORT || 5122;

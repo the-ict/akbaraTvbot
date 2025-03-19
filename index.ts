@@ -8,6 +8,7 @@ import cors from "cors";
 import dotenv from "dotenv"
 import { connectDb } from "./config/connect";
 import User from "./routes/User"
+import topFilms from "./handlers/topFilms";
 
 const app: Express = express();
 
@@ -38,16 +39,8 @@ bot.on("callback_query", (callbackQuery) => {
 
 
 bot.on("message", (message) => {
-    if (message?.web_app_data?.data) {
-        try {
-            const data = JSON.parse(message.web_app_data.data);
-            console.log("Qabul qilingan ma'lumot:", data);
-
-            bot.sendMessage(message.chat.id, "Qabul qilindi ✅");
-            bot.sendMessage(message.chat.id, `Ism: ${data.name}`);
-        } catch (error) {
-            console.error("Xatolik:", error);
-        }
+    if (message.text == "Top filmlar" || message.text == "Top movies" || message.text == "Лучшие фильмы") {
+        topFilms(message)
     }
 });
 

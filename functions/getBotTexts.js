@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSaveErrorText = exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getQueryText = void 0;
+exports.getChooseText = exports.getTopFilmsText = exports.getSaveErrorText = exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getQueryText = void 0;
 const language_1 = require("../states/language");
 // Bu funksiyaning maqsadi foydalanuvchi uchun kerakli matnni qaytarish
 const getQueryText = (userId) => {
@@ -130,3 +130,67 @@ const getSaveErrorText = (userId) => {
     return "An unexpected error occurred!";
 };
 exports.getSaveErrorText = getSaveErrorText;
+const getTopFilmsText = (userId) => {
+    if (language_1.userState[userId]) {
+        const userLang = language_1.userState[userId].lang;
+        if (userLang === "uz") {
+            return {
+                inline_keyboard: [
+                    [{ text: "1. 3 Idiots", callback_data: "hind_3idiots" }],
+                    [{ text: "2. Bahubali", callback_data: "hind_bahubali" }],
+                    [{ text: "3. KGF Chapter 2", callback_data: "hind_kgf2" }]
+                ],
+            };
+        }
+        else if (userLang === "en") {
+            return {
+                inline_keyboard: [
+                    [{ text: "1. 3 Idiots", callback_data: "hind_3idiots" }],
+                    [{ text: "2. Bahubali", callback_data: "hind_bahubali" }],
+                    [{ text: "3. KGF Chapter 2", callback_data: "hind_kgf2" }]
+                ],
+            };
+        }
+        else if (userLang === "ru") {
+            return {
+                inline_keyboard: [
+                    [{ text: "1. 3 идиота", callback_data: "hind_3idiots" }],
+                    [{ text: "2. Бахубали", callback_data: "hind_bahubali" }],
+                    [{ text: "3. КГФ Глава 2", callback_data: "hind_kgf2" }]
+                ],
+            };
+        }
+        else {
+            return {
+                inline_keyboard: [[{ text: "Default button", callback_data: "default" }]],
+            };
+        }
+    }
+    else {
+        return {
+            inline_keyboard: [[{ text: "Default button", callback_data: "default" }]],
+        };
+    }
+};
+exports.getTopFilmsText = getTopFilmsText;
+const getChooseText = (userId) => {
+    if (language_1.userState[userId]) {
+        const userLang = language_1.userState[userId].lang;
+        if (userLang === "uz") {
+            return "Tanlang!";
+        }
+        else if (userLang === "en") {
+            return "Choose!";
+        }
+        else if (userLang === "ru") {
+            return "Выберите!";
+        }
+        else {
+            return "Tanlang!";
+        }
+    }
+    else {
+        return "Tanlang!";
+    }
+};
+exports.getChooseText = getChooseText;

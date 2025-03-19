@@ -1,6 +1,6 @@
 import { InlineKeyboardMarkup, ReplyKeyboardMarkup } from "node-telegram-bot-api";
 import getSignInText from "../functions/getSignInText";
-import { getMenuKeyboardsText, getTopFilmsKeyboardsText } from "../functions/getBotTexts"
+import { getMenuKeyboardsText, getTopFilmsText } from "../functions/getBotTexts"
 
 interface IKeyboards {
     startKeyboard: InlineKeyboardMarkup;
@@ -28,6 +28,6 @@ export const keyboards: IKeyboards = {
         return getMenuKeyboardsText(userId)
     },
     topFilms: (userId): InlineKeyboardMarkup => {
-        return getTopFilmsKeyboardsText(userId)
+        return getTopFilmsText(userId)
     }
 };

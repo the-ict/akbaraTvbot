@@ -128,3 +128,60 @@ export const getSaveErrorText = (userId: number): string => {
     return "An unexpected error occurred!";
 };
 
+export const getTopFilmsText = (userId: number): InlineKeyboardMarkup => {
+    if (userState[userId]) {
+        const userLang = userState[userId].lang;
+
+        if (userLang === "uz") {
+            return {
+                inline_keyboard: [
+                    [{ text: "1. 3 Idiots", callback_data: "hind_3idiots" }],
+                    [{ text: "2. Bahubali", callback_data: "hind_bahubali" }],
+                    [{ text: "3. KGF Chapter 2", callback_data: "hind_kgf2" }]
+                ],
+            };
+        } else if (userLang === "en") {
+            return {
+                inline_keyboard: [
+                    [{ text: "1. 3 Idiots", callback_data: "hind_3idiots" }],
+                    [{ text: "2. Bahubali", callback_data: "hind_bahubali" }],
+                    [{ text: "3. KGF Chapter 2", callback_data: "hind_kgf2" }]
+                ],
+            };
+        } else if (userLang === "ru") {
+            return {
+                inline_keyboard: [
+                    [{ text: "1. 3 идиота", callback_data: "hind_3idiots" }],
+                    [{ text: "2. Бахубали", callback_data: "hind_bahubali" }],
+                    [{ text: "3. КГФ Глава 2", callback_data: "hind_kgf2" }]
+                ],
+            };
+        } else {
+            return {
+                inline_keyboard: [[{ text: "Default button", callback_data: "default" }]],
+            };
+        }
+    } else {
+        return {
+            inline_keyboard: [[{ text: "Default button", callback_data: "default" }]],
+        };
+    }
+}
+
+export const getChooseText = (userId: number): string => {
+    if (userState[userId]) {
+        const userLang = userState[userId].lang;
+
+        if (userLang === "uz") {
+            return "Tanlang!";
+        } else if (userLang === "en") {
+            return "Choose!";
+        } else if (userLang === "ru") {
+            return "Выберите!";
+        } else {
+            return "Tanlang!";
+        }
+    } else {
+        return "Tanlang!";
+    }
+};

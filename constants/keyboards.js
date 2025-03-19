@@ -25,6 +25,6 @@ exports.keyboards = {
         return (0, getBotTexts_1.getMenuKeyboardsText)(userId);
     },
     topFilms: (userId) => {
-        return (0, getBotTexts_1.getTopFilmsKeyboardsText)(userId);
+        return (0, getBotTexts_1.getTopFilmsText)(userId);
     }
 };
