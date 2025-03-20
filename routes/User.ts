@@ -4,6 +4,7 @@ import User from "../models/User";
 import bot from "../index"
 import { getQueryText, getSaveErrorText } from "../functions/getBotTexts";
 import { keyboards } from "../constants/keyboards";
+import { userMessage } from "../states/messageId";
 
 const router = express.Router()
 
@@ -21,6 +22,8 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
         bot.sendMessage(user_id, `${messageText}: ${name}`, {
             reply_markup: keyboards.menuKeyboards(user_id)
         })
+
+
 
         let newUserData = {
             name,
@@ -41,10 +44,16 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
 
         if (!newUser) {
             bot.sendMessage(user_id, getSaveErrorText(user_id))
+        } else {
+            if (userMessage[user_id]?.languageMessageId) {
+                await bot.deleteMessage(Number(user_id), Number(userMessage[user_id].languageMessageId))
+            } else {
+                await bot.sendMessage(Number(user_id), "Message ni o'chirib bo'lmadi");
+            }
+
+            res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
         }
 
-
-        res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
     } catch (error) {
         console.error("Serverda xatolik yuz berdi:", error);
         res.status(500).json({ error: "Ichki server xatosi", error_: error });

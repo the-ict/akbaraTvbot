@@ -38,11 +38,16 @@ function default_1(chatId, message, bot) {
         const messageId = yield bot.sendMessage(chatId, responseMessage, {
             reply_markup: keyboards_1.keyboards.signinKeyboard(chatId)
         });
-        if (messageId_1.userMessage[chatId].startMessageId) {
-            messageId_1.userMessage[chatId].languageMessageId = messageId;
+        if (messageId) {
+            if (messageId_1.userMessage[chatId]) {
+                messageId_1.userMessage[chatId].languageMessageId = messageId;
+            }
+            else {
+                bot.sendMessage(chatId, "Bunday chatidlik user messages mavjud emas");
+            }
         }
         else {
-            bot.sendMessage(chatId, "user messgae mavjud emas!");
+            bot.sendMessage(chatId, `Message id mavjud emas : ${messageId}`);
         }
     });
 }
