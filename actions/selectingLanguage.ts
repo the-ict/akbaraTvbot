@@ -1,7 +1,8 @@
 import { keyboards } from "../constants/keyboards";
 import { userState } from "../states/language";
+import { userMessage } from "../states/messageId"
 
-export default function (chatId: number, message: string, bot: any) {
+export default async function (chatId: number, message: string, bot: any) {
     if (!userState[chatId]) {
         userState[chatId] = { lang: message };
     }
@@ -25,7 +26,13 @@ export default function (chatId: number, message: string, bot: any) {
             return;
     }
 
-    bot.sendMessage(chatId, responseMessage, {
+    const messageId = await bot.sendMessage(chatId, responseMessage, {
         reply_markup: keyboards.signinKeyboard(chatId)
     });
+
+    if (userMessage[chatId].startMessageId) {
+        userMessage[chatId].languageMessageId = messageId
+    } else {
+        bot.sendMessage(chatId, "user messgae mavjud emas!")
+    }
 }

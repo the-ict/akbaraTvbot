@@ -68,10 +68,6 @@ bot.on("callback_query", async (callbackQuery) => {
         userMessage[chatId] = { startMessageId: "" };
     }
 
-    bot.sendMessage(String(callbackQuery.message?.from?.id), String(userMessage[chatId].startMessageId));
-
-    userMessage[chatId].languageMessageId = String(messageId);
-
     // Startdagi xabarni o‘chirish
     if (userMessage[chatId].startMessageId) {
         try {
