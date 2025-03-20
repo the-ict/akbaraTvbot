@@ -5,7 +5,7 @@ const keyboards_1 = require("../constants/keyboards");
 const language_1 = require("../states/language");
 function default_1(chatId, message, bot) {
     if (!language_1.userState[chatId]) {
-        language_1.userState[chatId] = { lang: "" };
+        language_1.userState[chatId] = { lang: message };
     }
     let responseMessage = "";
     switch (message) {

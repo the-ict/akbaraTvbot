@@ -23,6 +23,7 @@ const connect_1 = require("./config/connect");
 const User_1 = __importDefault(require("./routes/User"));
 const topFilms_1 = __importDefault(require("./handlers/topFilms"));
 const language_1 = require("./states/language");
+const messageId_1 = require("./states/messageId");
 const getBotTexts_1 = require("./functions/getBotTexts");
 const User_2 = __importDefault(require("./models/User"));
 const app = (0, express_1.default)();
@@ -34,7 +35,7 @@ const bot = new node_telegram_bot_api_1.default(TOKEN, { polling: true });
 bot.deleteWebHook();
 bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f;
-    bot.sendMessage(message.chat.id, `User id: ${(_a = message.from) === null || _a === void 0 ? void 0 : _a.id}`);
+    messageId_1.userMessage[Number((_a = message.from) === null || _a === void 0 ? void 0 : _a.id)].startMessageId = String(message.message_id);
     if (language_1.userState[Number((_b = message.from) === null || _b === void 0 ? void 0 : _b.id)]) {
         const user = yield User_2.default.findOne({ telegram_id: (_c = message.from) === null || _c === void 0 ? void 0 : _c.id });
         if (user) {
@@ -49,11 +50,14 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
     }
 }));
 bot.on("callback_query", (callbackQuery) => {
-    var _a;
+    var _a, _b;
     const chatId = callbackQuery.from.id;
-    bot.deleteMessage(String((_a = callbackQuery.message) === null || _a === void 0 ? void 0 : _a.chat.id), Number(callbackQuery.id));
     if (!chatId)
         return;
+    messageId_1.userMessage[Number(callbackQuery.from.id)].languageMessageId = String((_a = callbackQuery.message) === null || _a === void 0 ? void 0 : _a.message_id);
+    if (messageId_1.userMessage[Number(chatId)]) {
+        bot.deleteMessage(Number((_b = callbackQuery.message) === null || _b === void 0 ? void 0 : _b.chat.id), Number(messageId_1.userMessage[Number(chatId)].startMessageId));
+    }
     (0, selectingLanguage_1.default)(chatId, String(callbackQuery.data), bot);
 });
 bot.on("message", (message) => {

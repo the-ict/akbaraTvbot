@@ -26,7 +26,6 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             return;
         }
         const messageText = (0, getBotTexts_1.getQueryText)(user_id) || "OK!";
-        index_1.default.sendMessage(user_id, `Userid regionstration : ${user_id}`);
         index_1.default.sendMessage(user_id, `${messageText}: ${name}`, {
             reply_markup: keyboards_1.keyboards.menuKeyboards(user_id)
         });

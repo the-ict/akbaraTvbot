@@ -10,6 +10,7 @@ import { connectDb } from "./config/connect";
 import User from "./routes/User"
 import topFilms from "./handlers/topFilms";
 import { userState } from "./states/language";
+import { userMessage } from "./states/messageId"
 import { loggedInStartTexts, secondStartText } from "./functions/getBotTexts";
 import UserModel from "./models/User"
 
@@ -25,7 +26,7 @@ const bot = new TelegramBot(TOKEN, { polling: true });
 bot.deleteWebHook()
 
 bot.onText(/\/start/, async (message) => {
-    bot.sendMessage(message.chat.id, `User id: ${message.from?.id}`)
+    userMessage[Number(message.from?.id)].startMessageId = String(message.message_id)
     if (userState[Number(message.from?.id)]) {
         const user = await UserModel.findOne({ telegram_id: message.from?.id })
         if (user) {
@@ -46,8 +47,13 @@ bot.onText(/\/start/, async (message) => {
 bot.on("callback_query", (callbackQuery) => {
     const chatId = callbackQuery.from.id;
 
-    bot.deleteMessage(String(callbackQuery.message?.chat.id), Number(callbackQuery.id));
     if (!chatId) return;
+
+    userMessage[Number(callbackQuery.from.id)].languageMessageId = String(callbackQuery.message?.message_id)
+
+    if (userMessage[Number(chatId)]) {
+        bot.deleteMessage(Number(callbackQuery.message?.chat.id), Number(userMessage[Number(chatId)].startMessageId))
+    }
 
     selectingLanguage(chatId, String(callbackQuery.data), bot);
 });

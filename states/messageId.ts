@@ -1,0 +1,1 @@
+export let userMessage: { [chatId: number]: { startMessageId: string, languageMessageId?: string } } = {}

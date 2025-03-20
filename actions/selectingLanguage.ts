@@ -3,7 +3,7 @@ import { userState } from "../states/language";
 
 export default function (chatId: number, message: string, bot: any) {
     if (!userState[chatId]) {
-        userState[chatId] = { lang: "" };
+        userState[chatId] = { lang: message };
     }
 
     let responseMessage = "";
