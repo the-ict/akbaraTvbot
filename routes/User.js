@@ -48,14 +48,20 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             index_1.default.sendMessage(user_id, (0, getBotTexts_1.getSaveErrorText)(user_id));
         }
         else {
-            yield index_1.default.sendMessage(user_id, "O'chirish qismiga o'tdim");
             try {
-                if (messageId_1.userMessage[user_id] && messageId_1.userMessage[user_id].languageMessageId) {
-                    yield index_1.default.deleteMessage(Number(user_id), Number(messageId_1.userMessage[user_id].languageMessageId));
-                    console.log(`✅ Xabar o'chirildi: ${messageId_1.userMessage[user_id].languageMessageId}`);
+                // 1️⃣ userMessage obyektini tekshiramiz
+                if (!messageId_1.userMessage[user_id] || !messageId_1.userMessage[user_id].languageMessageId) {
+                    yield index_1.default.sendMessage(Number(user_id), "❌ Xabar topilmadi, uni o‘chirib bo‘lmadi.");
                 }
                 else {
-                    yield index_1.default.sendMessage(Number(user_id), "❌ Message ni o‘chirib bo‘lmadi, chunki u mavjud emas.");
+                    // 2️⃣ messageId ni raqamga o‘giramiz va noto‘g‘ri qiymatlarni tekshiramiz
+                    const messageId = Number(messageId_1.userMessage[user_id].languageMessageId);
+                    if (isNaN(messageId) || messageId <= 0) {
+                        yield index_1.default.sendMessage(Number(user_id), "❌ Message ID noto‘g‘ri.");
+                    }
+                    // 3️⃣ Xabarni o‘chiramiz
+                    yield index_1.default.deleteMessage(Number(user_id), messageId);
+                    console.log(`✅ Xabar o‘chirildi: ${messageId}`);
                 }
             }
             catch (error) {

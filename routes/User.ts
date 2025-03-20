@@ -45,14 +45,21 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
         if (!newUser) {
             bot.sendMessage(user_id, getSaveErrorText(user_id))
         } else {
-            await bot.sendMessage(user_id, "O'chirish qismiga o'tdim")
             try {
-                if (userMessage[user_id] && userMessage[user_id].languageMessageId) {
-                    await bot.deleteMessage(Number(user_id), Number(userMessage[user_id].languageMessageId));
-                    console.log(`✅ Xabar o'chirildi: ${userMessage[user_id].languageMessageId}`);
+                // 1️⃣ userMessage obyektini tekshiramiz
+                if (!userMessage[user_id] || !userMessage[user_id].languageMessageId) {
+                    await bot.sendMessage(Number(user_id), "❌ Xabar topilmadi, uni o‘chirib bo‘lmadi.");
                 } else {
-                    await bot.sendMessage(Number(user_id), "❌ Message ni o‘chirib bo‘lmadi, chunki u mavjud emas.");
+                    // 2️⃣ messageId ni raqamga o‘giramiz va noto‘g‘ri qiymatlarni tekshiramiz
+                    const messageId = Number(userMessage[user_id].languageMessageId);
+                    if (isNaN(messageId) || messageId <= 0) {
+                        await bot.sendMessage(Number(user_id), "❌ Message ID noto‘g‘ri.");
+                    }
+                    // 3️⃣ Xabarni o‘chiramiz
+                    await bot.deleteMessage(Number(user_id), messageId);
+                    console.log(`✅ Xabar o‘chirildi: ${messageId}`);
                 }
+
             } catch (error) {
                 console.error("❌ Xabarni o‘chirishda xatolik yuz berdi:", error);
                 await bot.sendMessage(Number(user_id), "⚠️ Xabarni o‘chirishda xatolik yuz berdi.");
@@ -60,6 +67,7 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
 
             res.status(200).json({ message: "✅ Javob muvaffaqiyatli yuborildi" });
         }
+
 
 
     } catch (error) {
