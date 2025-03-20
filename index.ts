@@ -36,7 +36,9 @@ bot.onText(/\/start/, async (message) => {
 
     if (userState[userId]) {
         if (user) {
-            return bot.sendMessage(message.chat.id, loggedInStartTexts(userId));
+            return bot.sendMessage(message.chat.id, loggedInStartTexts(userId), {
+                reply_markup: keyboards.menuKeyboards(userId)
+            });
         }
 
 
@@ -45,7 +47,6 @@ bot.onText(/\/start/, async (message) => {
         });
 
         userMessage[userId].startMessageId = String(sentMessage.message_id);
-        bot.sendMessage(userId, userMessage[userId].startMessageId)
     } else {
         const sentMessage = await bot.sendMessage(
             message.chat.id,

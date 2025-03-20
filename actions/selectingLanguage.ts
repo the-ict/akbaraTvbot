@@ -1,6 +1,5 @@
 import { keyboards } from "../constants/keyboards";
 import { userState } from "../states/language";
-import { userMessage } from "../states/messageId";
 
 export default async function (chatId: number, message: string, bot: any) {
     if (!userState[chatId]) {

@@ -42,13 +42,14 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
     const user = yield User_2.default.findOne({ telegram_id: userId });
     if (language_1.userState[userId]) {
         if (user) {
-            return bot.sendMessage(message.chat.id, (0, getBotTexts_1.loggedInStartTexts)(userId));
+            return bot.sendMessage(message.chat.id, (0, getBotTexts_1.loggedInStartTexts)(userId), {
+                reply_markup: keyboards_1.keyboards.menuKeyboards(userId)
+            });
         }
         const sentMessage = yield bot.sendMessage(message.chat.id, (0, getBotTexts_1.secondStartText)(userId), {
             reply_markup: keyboards_1.keyboards.signinKeyboard(userId)
         });
         messageId_1.userMessage[userId].startMessageId = String(sentMessage.message_id);
-        bot.sendMessage(userId, messageId_1.userMessage[userId].startMessageId);
     }
     else {
         const sentMessage = yield bot.sendMessage(message.chat.id, messages_1.messages.startCommand(String(message.chat.username)), { reply_markup: keyboards_1.keyboards.startKeyboard });
