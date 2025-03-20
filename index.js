@@ -33,14 +33,15 @@ const TOKEN = String(process.env.TOKEN);
 const bot = new node_telegram_bot_api_1.default(TOKEN, { polling: true });
 bot.deleteWebHook();
 bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e;
-    if (language_1.userState[Number((_a = message.from) === null || _a === void 0 ? void 0 : _a.id)]) {
-        const user = yield User_2.default.findOne({ telegram_id: (_b = message.from) === null || _b === void 0 ? void 0 : _b.id });
+    var _a, _b, _c, _d, _e, _f;
+    bot.sendMessage(message.chat.id, `User id: ${(_a = message.from) === null || _a === void 0 ? void 0 : _a.id}`);
+    if (language_1.userState[Number((_b = message.from) === null || _b === void 0 ? void 0 : _b.id)]) {
+        const user = yield User_2.default.findOne({ telegram_id: (_c = message.from) === null || _c === void 0 ? void 0 : _c.id });
         if (user) {
-            return bot.sendMessage(message.chat.id, (0, getBotTexts_1.loggedInStartTexts)(Number((_c = message.from) === null || _c === void 0 ? void 0 : _c.id)));
+            return bot.sendMessage(message.chat.id, (0, getBotTexts_1.loggedInStartTexts)(Number((_d = message.from) === null || _d === void 0 ? void 0 : _d.id)));
         }
-        bot.sendMessage(message.chat.id, (0, getBotTexts_1.secondStartText)(Number((_d = message.from) === null || _d === void 0 ? void 0 : _d.id)), {
-            reply_markup: keyboards_1.keyboards.signinKeyboard(Number((_e = message.from) === null || _e === void 0 ? void 0 : _e.id))
+        bot.sendMessage(message.chat.id, (0, getBotTexts_1.secondStartText)(Number((_e = message.from) === null || _e === void 0 ? void 0 : _e.id)), {
+            reply_markup: keyboards_1.keyboards.signinKeyboard(Number((_f = message.from) === null || _f === void 0 ? void 0 : _f.id))
         });
     }
     else {

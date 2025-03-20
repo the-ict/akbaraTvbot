@@ -18,6 +18,8 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
 
         const messageText = getQueryText(user_id) || "OK!";
 
+        bot.sendMessage(user_id, `Userid regionstration : ${user_id}`)
+
         bot.sendMessage(user_id, `${messageText}: ${name}`, {
             reply_markup: keyboards.menuKeyboards(user_id)
         })

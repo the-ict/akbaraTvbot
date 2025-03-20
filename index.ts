@@ -25,6 +25,7 @@ const bot = new TelegramBot(TOKEN, { polling: true });
 bot.deleteWebHook()
 
 bot.onText(/\/start/, async (message) => {
+    bot.sendMessage(message.chat.id, `User id: ${message.from?.id}`)
     if (userState[Number(message.from?.id)]) {
         const user = await UserModel.findOne({ telegram_id: message.from?.id })
         if (user) {
