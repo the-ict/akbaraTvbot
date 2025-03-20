@@ -40,6 +40,7 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
         messageId_1.userMessage[userId] = { startMessageId: "" };
     }
     messageId_1.userMessage[userId].startMessageId = String(message.message_id);
+    bot.sendMessage(message.chat.id, messageId_1.userMessage[userId].startMessageId);
     if (language_1.userState[userId]) {
         const user = yield User_2.default.findOne({ telegram_id: userId });
         if (user) {

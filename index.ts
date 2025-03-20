@@ -34,6 +34,8 @@ bot.onText(/\/start/, async (message) => {
 
     userMessage[userId].startMessageId = String(message.message_id);
 
+    bot.sendMessage(message.chat.id, userMessage[userId].startMessageId);
+
     if (userState[userId]) {
         const user = await UserModel.findOne({ telegram_id: userId });
         if (user) {
