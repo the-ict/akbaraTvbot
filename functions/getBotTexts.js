@@ -44,7 +44,8 @@ const getMenuKeyboardsText = (userId) => {
         if (userLang === "uz") {
             return {
                 keyboard: [
-                    [{ text: "Qidirish" }, { text: "Top filmlar" }]
+                    [{ text: "Top filmlar" }],
+                    [{ text: "Tilni o'zgartirish" }, { text: "Bog‘lanish" }]
                 ],
                 resize_keyboard: true,
             };
@@ -52,7 +53,8 @@ const getMenuKeyboardsText = (userId) => {
         else if (userLang === "en") {
             return {
                 keyboard: [
-                    [{ text: "Search" }, { text: "Top movies" }]
+                    [{ text: "Top movies" }],
+                    [{ text: "Change language" }, { text: "Contact" }]
                 ],
                 resize_keyboard: true,
             };
@@ -60,7 +62,8 @@ const getMenuKeyboardsText = (userId) => {
         else if (userLang === "ru") {
             return {
                 keyboard: [
-                    [{ text: "Поиск" }, { text: "Лучшие фильмы" }]
+                    [{ text: "Лучшие фильмы" }],
+                    [{ text: "Изменить язык" }, { text: "Связаться" }]
                 ],
                 resize_keyboard: true,
             };
