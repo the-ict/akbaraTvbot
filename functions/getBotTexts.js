@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getChooseText = exports.getTopFilmsText = exports.getSaveErrorText = exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getQueryText = void 0;
+exports.loggedInStartTexts = exports.secondStartText = exports.getChooseText = exports.getTopFilmsText = exports.getSaveErrorText = exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getQueryText = void 0;
 const language_1 = require("../states/language");
 // Bu funksiyaning maqsadi foydalanuvchi uchun kerakli matnni qaytarish
 const getQueryText = (userId) => {
@@ -194,3 +194,45 @@ const getChooseText = (userId) => {
     }
 };
 exports.getChooseText = getChooseText;
+const secondStartText = (userId) => {
+    if (language_1.userState[userId]) {
+        const lang = language_1.userState[userId].lang;
+        if (lang === "uz") {
+            return `✅ Siz allaqachon tilni tanlagansiz!\n\nAgar o'zgartirmoqchi bo'lsangiz, /setlan buyrug'ini yuboring!\nBotning barcha funksiyalaridan foydalanish uchun ro'yhatdan o'ting.`;
+        }
+        else if (lang === "en") {
+            return `✅ You have already selected a language!\n\nIf you want to change it, send the /setlan command!\nRegister to use all bot functions.`;
+        }
+        else if (lang === "ru") {
+            return `✅ Вы уже выбрали язык!\n\nЕсли хотите изменить, отправьте команду /setlan!\nЗарегистрируйтесь, чтобы использовать все функции бота.`;
+        }
+        else {
+            return `❌ Language not supported!`;
+        }
+    }
+    else {
+        return `❌ Language not supported!`;
+    }
+};
+exports.secondStartText = secondStartText;
+const loggedInStartTexts = (userId) => {
+    if (language_1.userState[userId]) {
+        const lang = language_1.userState[userId].lang;
+        if (lang === "uz") {
+            return `✅ Siz allaqachon tilni tanladingiz va ro'yhatdan o'tdingiz!\n\nBoshidan tilni tanlash uchun /setlan buyrug'ini yuboring.`;
+        }
+        else if (lang === "en") {
+            return `✅ You have already selected a language and registered!\n\nTo select a language from the beginning, send the /setlan command.`;
+        }
+        else if (lang === "ru") {
+            return `✅ Вы уже выбрали язык и зарегистрировались!\n\nЧтобы выбрать язык с самого начала, отправьте команду /setlan.`;
+        }
+        else {
+            return `❌ Language not supported!`;
+        }
+    }
+    else {
+        return `❌ Language not supported!`;
+    }
+};
+exports.loggedInStartTexts = loggedInStartTexts;

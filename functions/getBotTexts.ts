@@ -203,3 +203,21 @@ export const secondStartText = (userId: number): string => {
         return `❌ Language not supported!`
     }
 };
+
+export const loggedInStartTexts = (userId: number): string => {
+    if (userState[userId]) {
+        const lang = userState[userId].lang;
+
+        if (lang === "uz") {
+            return `✅ Siz allaqachon tilni tanladingiz va ro'yhatdan o'tdingiz!\n\nBoshidan tilni tanlash uchun /setlan buyrug'ini yuboring.`;
+        } else if (lang === "en") {
+            return `✅ You have already selected a language and registered!\n\nTo select a language from the beginning, send the /setlan command.`;
+        } else if (lang === "ru") {
+            return `✅ Вы уже выбрали язык и зарегистрировались!\n\nЧтобы выбрать язык с самого начала, отправьте команду /setlan.`;
+        } else {
+            return `❌ Language not supported!`;
+        }
+    } else {
+        return `❌ Language not supported!`;
+    }
+};
