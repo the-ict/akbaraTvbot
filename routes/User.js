@@ -20,7 +20,6 @@ const keyboards_1 = require("../constants/keyboards");
 const messageId_1 = require("../states/messageId");
 const router = express_1.default.Router();
 router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
         const { query_id, user_id, lastName, name, phone, country, districts, region } = req.body;
         if (!query_id || !user_id || !name || !phone || !country) {
@@ -49,13 +48,21 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             index_1.default.sendMessage(user_id, (0, getBotTexts_1.getSaveErrorText)(user_id));
         }
         else {
-            if ((_a = messageId_1.userMessage[user_id]) === null || _a === void 0 ? void 0 : _a.languageMessageId) {
-                yield index_1.default.deleteMessage(Number(user_id), Number(messageId_1.userMessage[user_id].languageMessageId));
+            yield index_1.default.sendMessage(user_id, "O'chirish qismiga o'tdim");
+            try {
+                if (messageId_1.userMessage[user_id] && messageId_1.userMessage[user_id].languageMessageId) {
+                    yield index_1.default.deleteMessage(Number(user_id), Number(messageId_1.userMessage[user_id].languageMessageId));
+                    console.log(`✅ Xabar o'chirildi: ${messageId_1.userMessage[user_id].languageMessageId}`);
+                }
+                else {
+                    yield index_1.default.sendMessage(Number(user_id), "❌ Message ni o‘chirib bo‘lmadi, chunki u mavjud emas.");
+                }
             }
-            else {
-                yield index_1.default.sendMessage(Number(user_id), "Message ni o'chirib bo'lmadi");
+            catch (error) {
+                console.error("❌ Xabarni o‘chirishda xatolik yuz berdi:", error);
+                yield index_1.default.sendMessage(Number(user_id), "⚠️ Xabarni o‘chirishda xatolik yuz berdi.");
             }
-            res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
+            res.status(200).json({ message: "✅ Javob muvaffaqiyatli yuborildi" });
         }
     }
     catch (error) {

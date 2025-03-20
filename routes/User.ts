@@ -45,14 +45,22 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
         if (!newUser) {
             bot.sendMessage(user_id, getSaveErrorText(user_id))
         } else {
-            if (userMessage[user_id]?.languageMessageId) {
-                await bot.deleteMessage(Number(user_id), Number(userMessage[user_id].languageMessageId))
-            } else {
-                await bot.sendMessage(Number(user_id), "Message ni o'chirib bo'lmadi");
+            await bot.sendMessage(user_id, "O'chirish qismiga o'tdim")
+            try {
+                if (userMessage[user_id] && userMessage[user_id].languageMessageId) {
+                    await bot.deleteMessage(Number(user_id), Number(userMessage[user_id].languageMessageId));
+                    console.log(`✅ Xabar o'chirildi: ${userMessage[user_id].languageMessageId}`);
+                } else {
+                    await bot.sendMessage(Number(user_id), "❌ Message ni o‘chirib bo‘lmadi, chunki u mavjud emas.");
+                }
+            } catch (error) {
+                console.error("❌ Xabarni o‘chirishda xatolik yuz berdi:", error);
+                await bot.sendMessage(Number(user_id), "⚠️ Xabarni o‘chirishda xatolik yuz berdi.");
             }
 
-            res.status(200).json({ message: "Javob muvaffaqiyatli yuborildi" });
+            res.status(200).json({ message: "✅ Javob muvaffaqiyatli yuborildi" });
         }
+
 
     } catch (error) {
         console.error("Serverda xatolik yuz berdi:", error);
