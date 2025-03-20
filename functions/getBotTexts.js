@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loggedInStartTexts = exports.secondStartText = exports.getChooseText = exports.getTopFilmsText = exports.getSaveErrorText = exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getQueryText = void 0;
+exports.loggedInStartTexts = exports.secondStartText = exports.getChooseText = exports.getTopFilmsText = exports.getSaveErrorText = exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getMovieNotFoundText = exports.getQueryText = void 0;
 const language_1 = require("../states/language");
 // Bu funksiyaning maqsadi foydalanuvchi uchun kerakli matnni qaytarish
 const getQueryText = (userId) => {
@@ -21,6 +21,22 @@ const getQueryText = (userId) => {
     }
 };
 exports.getQueryText = getQueryText;
+const getMovieNotFoundText = (userId) => {
+    if (language_1.userState[userId]) {
+        const userLang = language_1.userState[userId].lang;
+        if (userLang === "uz") {
+            return "Bunday kino topilmadi!";
+        }
+        else if (userLang === "en") {
+            return "No such movie found!";
+        }
+        else if (userLang === "ru") {
+            return "Такой фильм не найден!";
+        }
+    }
+    return "Hech narsa yo'q";
+};
+exports.getMovieNotFoundText = getMovieNotFoundText;
 // Bu funksiyaning maqsadi foydalanuvchining tiliga qarab tugmalarni qaytarish
 const getMenuKeyboardsText = (userId) => {
     if (language_1.userState[userId]) {
@@ -136,27 +152,27 @@ const getTopFilmsText = (userId) => {
         if (userLang === "uz") {
             return {
                 inline_keyboard: [
-                    [{ text: "1. 3 Idiots", callback_data: "hind_3idiots" }],
-                    [{ text: "2. Bahubali", callback_data: "hind_bahubali" }],
-                    [{ text: "3. KGF Chapter 2", callback_data: "hind_kgf2" }]
+                    [{ text: "1. 3 Idiots", callback_data: "?movie=hind_bahubali" }],
+                    [{ text: "2. Bahubali", callback_data: "?movie=hind_bahubali3" }],
+                    [{ text: "3. KGF Chapter 2", callback_data: "?moive=hind_bahubali4" }]
                 ],
             };
         }
         else if (userLang === "en") {
             return {
                 inline_keyboard: [
-                    [{ text: "1. 3 Idiots", callback_data: "hind_3idiots" }],
-                    [{ text: "2. Bahubali", callback_data: "hind_bahubali" }],
-                    [{ text: "3. KGF Chapter 2", callback_data: "hind_kgf2" }]
+                    [{ text: "1. 3 Idiots", callback_data: "?movie=hind_bahubali" }],
+                    [{ text: "2. Bahubali", callback_data: "?movie=hind_bahubali3" }],
+                    [{ text: "3. KGF Chapter 2", callback_data: "?moive=hind_bahubali4" }]
                 ],
             };
         }
         else if (userLang === "ru") {
             return {
                 inline_keyboard: [
-                    [{ text: "1. 3 идиота", callback_data: "hind_3idiots" }],
-                    [{ text: "2. Бахубали", callback_data: "hind_bahubali" }],
-                    [{ text: "3. КГФ Глава 2", callback_data: "hind_kgf2" }]
+                    [{ text: "1. 3 идиота", callback_data: "?movie=hind_bahubali" }],
+                    [{ text: "2. Бахубали", callback_data: "?movie=hind_bahubali3" }],
+                    [{ text: "3. КГФ Глава 2", callback_data: "?moive=hind_bahubali4" }]
                 ],
             };
         }

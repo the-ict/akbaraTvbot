@@ -41,7 +41,6 @@ bot.onText(/\/start/, async (message) => {
             });
         }
 
-
         const sentMessage = await bot.sendMessage(message.chat.id, secondStartText(userId), {
             reply_markup: keyboards.signinKeyboard(userId)
         });

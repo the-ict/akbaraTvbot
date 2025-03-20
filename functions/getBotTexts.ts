@@ -18,6 +18,22 @@ export const getQueryText = (userId: number) => {
     }
 }
 
+export const getMovieNotFoundText = (userId: number) => {
+    if (userState[userId]) {
+        const userLang = userState[userId].lang;
+
+        if (userLang === "uz") {
+            return "Bunday kino topilmadi!";
+        } else if (userLang === "en") {
+            return "No such movie found!";
+        } else if (userLang === "ru") {
+            return "Такой фильм не найден!";
+        }
+    }
+    return "Hech narsa yo'q";
+};
+
+
 // Bu funksiyaning maqsadi foydalanuvchining tiliga qarab tugmalarni qaytarish
 export const getMenuKeyboardsText = (userId: number): ReplyKeyboardMarkup => {
     if (userState[userId]) {
@@ -135,25 +151,25 @@ export const getTopFilmsText = (userId: number): InlineKeyboardMarkup => {
         if (userLang === "uz") {
             return {
                 inline_keyboard: [
-                    [{ text: "1. 3 Idiots", callback_data: "hind_3idiots" }],
-                    [{ text: "2. Bahubali", callback_data: "hind_bahubali" }],
-                    [{ text: "3. KGF Chapter 2", callback_data: "hind_kgf2" }]
+                    [{ text: "1. 3 Idiots", callback_data: "?movie=hind_bahubali" }],
+                    [{ text: "2. Bahubali", callback_data: "?movie=hind_bahubali3" }],
+                    [{ text: "3. KGF Chapter 2", callback_data: "?moive=hind_bahubali4" }]
                 ],
             };
         } else if (userLang === "en") {
             return {
                 inline_keyboard: [
-                    [{ text: "1. 3 Idiots", callback_data: "hind_3idiots" }],
-                    [{ text: "2. Bahubali", callback_data: "hind_bahubali" }],
-                    [{ text: "3. KGF Chapter 2", callback_data: "hind_kgf2" }]
+                    [{ text: "1. 3 Idiots", callback_data: "?movie=hind_bahubali" }],
+                    [{ text: "2. Bahubali", callback_data: "?movie=hind_bahubali3" }],
+                    [{ text: "3. KGF Chapter 2", callback_data: "?moive=hind_bahubali4" }]
                 ],
             };
         } else if (userLang === "ru") {
             return {
                 inline_keyboard: [
-                    [{ text: "1. 3 идиота", callback_data: "hind_3idiots" }],
-                    [{ text: "2. Бахубали", callback_data: "hind_bahubali" }],
-                    [{ text: "3. КГФ Глава 2", callback_data: "hind_kgf2" }]
+                    [{ text: "1. 3 идиота", callback_data: "?movie=hind_bahubali" }],
+                    [{ text: "2. Бахубали", callback_data: "?movie=hind_bahubali3" }],
+                    [{ text: "3. КГФ Глава 2", callback_data: "?moive=hind_bahubali4" }]
                 ],
             };
         } else {
