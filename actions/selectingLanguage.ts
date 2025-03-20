@@ -3,14 +3,14 @@ import { userState } from "../states/language";
 
 export default function (chatId: number, message: string, bot: any) {
     if (!userState[chatId]) {
-        userState[chatId] = { lang: "" }; 
+        userState[chatId] = { lang: "" };
     }
 
     let responseMessage = "";
 
     switch (message) {
         case "uz":
-            userState[chatId].lang = "uz"; 
+            userState[chatId].lang = "uz";
             responseMessage = "Siz uzbek tilini tanladingiz !\nEndi bot funksiyalarini to’liq ishlatish uchun ro’yxatdan o’ting!";
             break;
         case "en":

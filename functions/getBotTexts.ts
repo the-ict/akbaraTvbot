@@ -185,3 +185,21 @@ export const getChooseText = (userId: number): string => {
         return "Tanlang!";
     }
 };
+
+export const secondStartText = (userId: number): string => {
+    if (userState[userId]) {
+        const lang = userState[userId].lang;
+
+        if (lang === "uz") {
+            return `✅ Siz allaqachon tilni tanlagansiz!\n\nAgar o'zgartirmoqchi bo'lsangiz, /setlan buyrug'ini yuboring!\nBotning barcha funksiyalaridan foydalanish uchun ro'yhatdan o'ting.`;
+        } else if (lang === "en") {
+            return `✅ You have already selected a language!\n\nIf you want to change it, send the /setlan command!\nRegister to use all bot functions.`;
+        } else if (lang === "ru") {
+            return `✅ Вы уже выбрали язык!\n\nЕсли хотите изменить, отправьте команду /setlan!\nЗарегистрируйтесь, чтобы использовать все функции бота.`;
+        } else {
+            return `❌ Language not supported!`;
+        }
+    } else {
+        return `❌ Language not supported!`
+    }
+};

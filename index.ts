@@ -9,6 +9,8 @@ import dotenv from "dotenv"
 import { connectDb } from "./config/connect";
 import User from "./routes/User"
 import topFilms from "./handlers/topFilms";
+import { userState } from "./states/language";
+import { secondStartText } from "./functions/getBotTexts";
 
 const app: Express = express();
 
@@ -22,17 +24,21 @@ const bot = new TelegramBot(TOKEN, { polling: true });
 bot.deleteWebHook()
 
 bot.onText(/\/start/, (message) => {
-    bot.sendMessage(
-        message.chat.id,
-        messages.startCommand(String(message.chat.username)),
-        { reply_markup: keyboards.startKeyboard }
-    );
+    if (userState[Number(message.from?.id)]) {
+        bot.sendMessage(message.chat.id, secondStartText(Number(message.from?.id)), {
+            reply_markup: keyboards.signinKeyboard(Number(message.from?.id))
+        })
+    } else {
+        bot.sendMessage(
+            message.chat.id,
+            messages.startCommand(String(message.chat.username)),
+            { reply_markup: keyboards.startKeyboard }
+        );
+    }
 });
 
 bot.on("callback_query", (callbackQuery) => {
     const chatId = callbackQuery.from.id;
-
-    console.log("Foydalanuvchi id: ", chatId);
 
     if (!chatId) return;
 
