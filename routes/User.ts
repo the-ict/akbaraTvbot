@@ -4,7 +4,6 @@ import User from "../models/User";
 import bot from "../index"
 import { getQueryText, getSaveErrorText } from "../functions/getBotTexts";
 import { keyboards } from "../constants/keyboards";
-import { userMessage } from "../states/messageId";
 
 const router = express.Router()
 
@@ -44,37 +43,27 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
 
         if (!newUser) {
             bot.sendMessage(user_id, getSaveErrorText(user_id))
-        } else {
-            try {
-                // 1️⃣ userMessage obyektini tekshiramiz
-                if (!userMessage[user_id] || !userMessage[user_id].languageMessageId) {
-                    await bot.sendMessage(Number(user_id), "❌ Xabar topilmadi, uni o‘chirib bo‘lmadi.");
-                } else {
-                    // 2️⃣ messageId ni raqamga o‘giramiz va noto‘g‘ri qiymatlarni tekshiramiz
-                    const messageId = Number(userMessage[user_id].languageMessageId);
-                    if (isNaN(messageId) || messageId <= 0) {
-                        await bot.sendMessage(Number(user_id), "❌ Message ID noto‘g‘ri.");
-                    }
-                    // 3️⃣ Xabarni o‘chiramiz
-                    await bot.deleteMessage(Number(user_id), messageId);
-                    console.log(`✅ Xabar o‘chirildi: ${messageId}`);
-                }
-
-            } catch (error) {
-                console.error("❌ Xabarni o‘chirishda xatolik yuz berdi:", error);
-                await bot.sendMessage(Number(user_id), "⚠️ Xabarni o‘chirishda xatolik yuz berdi.");
-            }
-
-            res.status(200).json({ message: "✅ Javob muvaffaqiyatli yuborildi" });
         }
 
-
-
+        res.status(200).json({ message: "User malumotlari serverga saqlandi !" })
     } catch (error) {
         console.error("Serverda xatolik yuz berdi:", error);
         res.status(500).json({ error: "Ichki server xatosi", error_: error });
     }
 });
+
+router.get("/:id", async (req: Request, res: Response) => {
+    try {
+        const user = await User.findOne({ telegram_id: req.params.id })
+
+        if (user) res.status(200).json({ user })
+        else {
+            res.status(200).json({ message: "user mavjud emas" })
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Server error yuzaga keldi" })
+    }
+})
 
 
 

@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
 const keyboards_1 = require("../constants/keyboards");
 const language_1 = require("../states/language");
-const messageId_1 = require("../states/messageId");
 function default_1(chatId, message, bot) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!language_1.userState[chatId]) {
@@ -35,19 +34,8 @@ function default_1(chatId, message, bot) {
             default:
                 return;
         }
-        const messageId = yield bot.sendMessage(chatId, responseMessage, {
+        yield bot.sendMessage(chatId, responseMessage, {
             reply_markup: keyboards_1.keyboards.signinKeyboard(chatId)
         });
-        if (messageId) {
-            if (messageId_1.userMessage[chatId]) {
-                messageId_1.userMessage[chatId].languageMessageId = messageId;
-            }
-            else {
-                bot.sendMessage(chatId, "Bunday chatidlik user messages mavjud emas");
-            }
-        }
-        else {
-            bot.sendMessage(chatId, `Message id mavjud emas : ${messageId}`);
-        }
     });
 }

@@ -26,18 +26,7 @@ export default async function (chatId: number, message: string, bot: any) {
             return;
     }
 
-    const messageId = await bot.sendMessage(chatId, responseMessage, {
+    await bot.sendMessage(chatId, responseMessage, {
         reply_markup: keyboards.signinKeyboard(chatId)
     });
-
-    if (messageId) {
-        if (userMessage[chatId]) {
-            userMessage[chatId].languageMessageId = messageId
-        } else {
-            bot.sendMessage(chatId, "Bunday chatidlik user messages mavjud emas")
-        }
-
-    } else {
-        bot.sendMessage(chatId, `Message id mavjud emas : ${messageId}`)
-    }
 }

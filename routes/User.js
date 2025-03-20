@@ -17,7 +17,6 @@ const User_1 = __importDefault(require("../models/User"));
 const index_1 = __importDefault(require("../index"));
 const getBotTexts_1 = require("../functions/getBotTexts");
 const keyboards_1 = require("../constants/keyboards");
-const messageId_1 = require("../states/messageId");
 const router = express_1.default.Router();
 router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -47,33 +46,24 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
         if (!newUser) {
             index_1.default.sendMessage(user_id, (0, getBotTexts_1.getSaveErrorText)(user_id));
         }
-        else {
-            try {
-                // 1️⃣ userMessage obyektini tekshiramiz
-                if (!messageId_1.userMessage[user_id] || !messageId_1.userMessage[user_id].languageMessageId) {
-                    yield index_1.default.sendMessage(Number(user_id), "❌ Xabar topilmadi, uni o‘chirib bo‘lmadi.");
-                }
-                else {
-                    // 2️⃣ messageId ni raqamga o‘giramiz va noto‘g‘ri qiymatlarni tekshiramiz
-                    const messageId = Number(messageId_1.userMessage[user_id].languageMessageId);
-                    if (isNaN(messageId) || messageId <= 0) {
-                        yield index_1.default.sendMessage(Number(user_id), "❌ Message ID noto‘g‘ri.");
-                    }
-                    // 3️⃣ Xabarni o‘chiramiz
-                    yield index_1.default.deleteMessage(Number(user_id), messageId);
-                    console.log(`✅ Xabar o‘chirildi: ${messageId}`);
-                }
-            }
-            catch (error) {
-                console.error("❌ Xabarni o‘chirishda xatolik yuz berdi:", error);
-                yield index_1.default.sendMessage(Number(user_id), "⚠️ Xabarni o‘chirishda xatolik yuz berdi.");
-            }
-            res.status(200).json({ message: "✅ Javob muvaffaqiyatli yuborildi" });
-        }
+        res.status(200).json({ message: "User malumotlari serverga saqlandi !" });
     }
     catch (error) {
         console.error("Serverda xatolik yuz berdi:", error);
         res.status(500).json({ error: "Ichki server xatosi", error_: error });
+    }
+}));
+router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield User_1.default.findOne({ telegram_id: req.params.id });
+        if (user)
+            res.status(200).json({ user });
+        else {
+            res.status(200).json({ message: "user mavjud emas" });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: "Server error yuzaga keldi" });
     }
 }));
 exports.default = router;
