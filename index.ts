@@ -68,14 +68,6 @@ bot.on("callback_query", async (callbackQuery) => {
         userMessage[chatId] = { startMessageId: "" };
     }
 
-    if (userMessage[chatId].startMessageId) {
-        try {
-            await bot.deleteMessage(chatId, Number(userMessage[chatId].startMessageId));
-        } catch (err) {
-            console.error("Xabarni o‘chirishda xatolik ❌", err);
-        }
-    }
-
     selectingLanguage(chatId, String(callbackQuery.data), bot);
 });
 
