@@ -32,9 +32,9 @@ bot.onText(/\/start/, async (message) => {
         userMessage[userId] = { startMessageId: "" };
     }
 
+    const user = await UserModel.findOne({ telegram_id: userId });
 
     if (userState[userId]) {
-        const user = await UserModel.findOne({ telegram_id: userId });
         if (user) {
             return bot.sendMessage(message.chat.id, loggedInStartTexts(userId));
         }
