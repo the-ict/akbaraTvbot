@@ -66,7 +66,6 @@ bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, fu
     if (!messageId_1.userMessage[chatId]) {
         messageId_1.userMessage[chatId] = { startMessageId: "" };
     }
-    // Startdagi xabarni o‘chirish
     if (messageId_1.userMessage[chatId].startMessageId) {
         try {
             yield bot.deleteMessage(chatId, Number(messageId_1.userMessage[chatId].startMessageId));
