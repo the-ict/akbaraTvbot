@@ -30,7 +30,9 @@ bot.onText(/\/start/, (message) => {
 });
 
 bot.on("callback_query", (callbackQuery) => {
-    const chatId = callbackQuery.message?.chat.id;
+    const chatId = callbackQuery.from.id;
+
+    console.log("Foydalanuvchi id: ", chatId);
 
     if (!chatId) return;
 

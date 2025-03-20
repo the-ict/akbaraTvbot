@@ -24,8 +24,8 @@ bot.onText(/\/start/, (message) => {
     bot.sendMessage(message.chat.id, messages_1.messages.startCommand(String(message.chat.username)), { reply_markup: keyboards_1.keyboards.startKeyboard });
 });
 bot.on("callback_query", (callbackQuery) => {
-    var _a;
-    const chatId = (_a = callbackQuery.message) === null || _a === void 0 ? void 0 : _a.chat.id;
+    const chatId = callbackQuery.from.id;
+    console.log("Foydalanuvchi id: ", chatId);
     if (!chatId)
         return;
     (0, selectingLanguage_1.default)(chatId, String(callbackQuery.data), bot);
