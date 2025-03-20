@@ -39,19 +39,21 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
     if (!messageId_1.userMessage[userId]) {
         messageId_1.userMessage[userId] = { startMessageId: "" };
     }
-    messageId_1.userMessage[userId].startMessageId = String(message.message_id);
-    bot.sendMessage(message.chat.id, messageId_1.userMessage[userId].startMessageId);
     if (language_1.userState[userId]) {
         const user = yield User_2.default.findOne({ telegram_id: userId });
         if (user) {
             return bot.sendMessage(message.chat.id, (0, getBotTexts_1.loggedInStartTexts)(userId));
         }
-        bot.sendMessage(message.chat.id, (0, getBotTexts_1.secondStartText)(userId), {
+        const sentMessage = yield bot.sendMessage(message.chat.id, (0, getBotTexts_1.secondStartText)(userId), {
             reply_markup: keyboards_1.keyboards.signinKeyboard(userId)
         });
+        messageId_1.userMessage[userId].startMessageId = String(sentMessage.message_id);
+        bot.sendMessage(userId, messageId_1.userMessage[userId].startMessageId);
     }
     else {
-        bot.sendMessage(message.chat.id, messages_1.messages.startCommand(String(message.chat.username)), { reply_markup: keyboards_1.keyboards.startKeyboard });
+        const sentMessage = yield bot.sendMessage(message.chat.id, messages_1.messages.startCommand(String(message.chat.username)), { reply_markup: keyboards_1.keyboards.startKeyboard });
+        messageId_1.userMessage[userId].startMessageId = String(sentMessage.message_id);
+        bot.sendMessage(userId, messageId_1.userMessage[userId].startMessageId);
     }
 }));
 bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, function* () {

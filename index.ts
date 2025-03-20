@@ -32,24 +32,29 @@ bot.onText(/\/start/, async (message) => {
         userMessage[userId] = { startMessageId: "" };
     }
 
-    userMessage[userId].startMessageId = String(message.message_id);
-
-    bot.sendMessage(message.chat.id, userMessage[userId].startMessageId);
 
     if (userState[userId]) {
         const user = await UserModel.findOne({ telegram_id: userId });
         if (user) {
             return bot.sendMessage(message.chat.id, loggedInStartTexts(userId));
         }
-        bot.sendMessage(message.chat.id, secondStartText(userId), {
+
+
+        const sentMessage = await bot.sendMessage(message.chat.id, secondStartText(userId), {
             reply_markup: keyboards.signinKeyboard(userId)
         });
+
+        userMessage[userId].startMessageId = String(sentMessage.message_id);
+        bot.sendMessage(userId, userMessage[userId].startMessageId)
     } else {
-        bot.sendMessage(
+        const sentMessage = await bot.sendMessage(
             message.chat.id,
             messages.startCommand(String(message.chat.username)),
             { reply_markup: keyboards.startKeyboard }
         );
+
+        userMessage[userId].startMessageId = String(sentMessage.message_id);
+        bot.sendMessage(userId, userMessage[userId].startMessageId)
     }
 });
 
