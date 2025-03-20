@@ -33,6 +33,39 @@ export const getMovieNotFoundText = (userId: number) => {
     return "Hech narsa yo'q";
 };
 
+export const getNewLangText = (userId: number) => {
+    if (userState[userId]) {
+        const userLang = userState[userId].lang;
+
+        if (userLang === "uz") {
+            return "Yangi tilni tanlang!";
+        } else if (userLang === "en") {
+            return "Select a new language!";
+        } else if (userLang === "ru") {
+            return "Выберите новый язык!";
+        }
+    }
+    return "Hech narsa yo'q";
+};
+
+
+export const getAdminText = (userId: number) => {
+    if (userState[userId]) {
+        const userLang = userState[userId].lang;
+
+        if (userLang === "uz") {
+            return "Admin bugun band!";
+        } else if (userLang === "en") {
+            return "The admin is busy today!";
+        } else if (userLang === "ru") {
+            return "Админ сегодня занят!";
+        }
+    }
+    return "Hech narsa yo'q";
+};
+
+
+
 
 // Bu funksiyaning maqsadi foydalanuvchining tiliga qarab tugmalarni qaytarish
 export const getMenuKeyboardsText = (userId: number): ReplyKeyboardMarkup => {

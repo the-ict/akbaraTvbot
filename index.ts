@@ -11,8 +11,9 @@ import User from "./routes/User";
 import topFilms from "./handlers/topFilms";
 import { userState } from "./states/language";
 import { userMessage } from "./states/messageId";
-import { loggedInStartTexts, secondStartText } from "./functions/getBotTexts";
+import { getAdminText, loggedInStartTexts, secondStartText } from "./functions/getBotTexts";
 import UserModel from "./models/User";
+import changeLan from "./handlers/changeLan";
 
 const app: Express = express();
 
@@ -54,7 +55,6 @@ bot.onText(/\/start/, async (message) => {
         );
 
         userMessage[userId].startMessageId = String(sentMessage.message_id);
-        bot.sendMessage(userId, userMessage[userId].startMessageId)
     }
 });
 
@@ -74,6 +74,12 @@ bot.on("callback_query", async (callbackQuery) => {
 bot.on("message", (message) => {
     if (["Top filmlar", "Top movies", "Лучшие фильмы"].includes(message.text || "")) {
         topFilms(message);
+    }
+
+    else if (["Tilni o'zgartirish", "Change language", "Изменить язык", "/setlan"].includes(message.text || "")) {
+        changeLan(message)
+    } else if (["Bog‘lanish", "Contact", "Связаться"].includes(message.text || "")) {
+        bot.sendMessage(message.chat.id, getAdminText(Number(message.from?.id)))
     }
 });
 

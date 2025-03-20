@@ -46,7 +46,9 @@ function default_1(chatId, message, bot) {
             const user = yield User_1.default.findOne({ telegram_id: chatId });
             console.log(user);
             if (user) {
-                yield bot.sendMessage(chatId, logged);
+                yield bot.sendMessage(chatId, logged, {
+                    reply_markup: keyboards_1.keyboards.menuKeyboards(chatId)
+                });
             }
             else {
                 yield bot.sendMessage(chatId, responseMessage, {

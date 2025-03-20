@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loggedInStartTexts = exports.secondStartText = exports.getChooseText = exports.getTopFilmsText = exports.getSaveErrorText = exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getMovieNotFoundText = exports.getQueryText = void 0;
+exports.loggedInStartTexts = exports.secondStartText = exports.getChooseText = exports.getTopFilmsText = exports.getSaveErrorText = exports.getLoggedInText = exports.getTopFilmsKeyboardsText = exports.getMenuKeyboardsText = exports.getAdminText = exports.getNewLangText = exports.getMovieNotFoundText = exports.getQueryText = void 0;
 const language_1 = require("../states/language");
 // Bu funksiyaning maqsadi foydalanuvchi uchun kerakli matnni qaytarish
 const getQueryText = (userId) => {
@@ -37,6 +37,38 @@ const getMovieNotFoundText = (userId) => {
     return "Hech narsa yo'q";
 };
 exports.getMovieNotFoundText = getMovieNotFoundText;
+const getNewLangText = (userId) => {
+    if (language_1.userState[userId]) {
+        const userLang = language_1.userState[userId].lang;
+        if (userLang === "uz") {
+            return "Yangi tilni tanlang!";
+        }
+        else if (userLang === "en") {
+            return "Select a new language!";
+        }
+        else if (userLang === "ru") {
+            return "Выберите новый язык!";
+        }
+    }
+    return "Hech narsa yo'q";
+};
+exports.getNewLangText = getNewLangText;
+const getAdminText = (userId) => {
+    if (language_1.userState[userId]) {
+        const userLang = language_1.userState[userId].lang;
+        if (userLang === "uz") {
+            return "Admin bugun band!";
+        }
+        else if (userLang === "en") {
+            return "The admin is busy today!";
+        }
+        else if (userLang === "ru") {
+            return "Админ сегодня занят!";
+        }
+    }
+    return "Hech narsa yo'q";
+};
+exports.getAdminText = getAdminText;
 // Bu funksiyaning maqsadi foydalanuvchining tiliga qarab tugmalarni qaytarish
 const getMenuKeyboardsText = (userId) => {
     if (language_1.userState[userId]) {

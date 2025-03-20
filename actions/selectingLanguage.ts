@@ -35,7 +35,9 @@ export default async function (chatId: number, message: string, bot: any) {
         const user = await User.findOne({ telegram_id: chatId })
         console.log(user)
         if (user) {
-            await bot.sendMessage(chatId, logged)
+            await bot.sendMessage(chatId, logged, {
+                reply_markup: keyboards.menuKeyboards(chatId)
+            })
         } else {
             await bot.sendMessage(chatId, responseMessage, {
                 reply_markup: keyboards.signinKeyboard(chatId)

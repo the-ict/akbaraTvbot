@@ -26,6 +26,7 @@ const language_1 = require("./states/language");
 const messageId_1 = require("./states/messageId");
 const getBotTexts_1 = require("./functions/getBotTexts");
 const User_2 = __importDefault(require("./models/User"));
+const changeLan_1 = __importDefault(require("./handlers/changeLan"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -54,7 +55,6 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
     else {
         const sentMessage = yield bot.sendMessage(message.chat.id, messages_1.messages.startCommand(String(message.chat.username)), { reply_markup: keyboards_1.keyboards.startKeyboard });
         messageId_1.userMessage[userId].startMessageId = String(sentMessage.message_id);
-        bot.sendMessage(userId, messageId_1.userMessage[userId].startMessageId);
     }
 }));
 bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, function* () {
@@ -69,8 +69,15 @@ bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, fu
     (0, selectingLanguage_1.default)(chatId, String(callbackQuery.data), bot);
 }));
 bot.on("message", (message) => {
+    var _a;
     if (["Top filmlar", "Top movies", "Лучшие фильмы"].includes(message.text || "")) {
         (0, topFilms_1.default)(message);
+    }
+    else if (["Tilni o'zgartirish", "Change language", "Изменить язык", "/setlan"].includes(message.text || "")) {
+        (0, changeLan_1.default)(message);
+    }
+    else if (["Bog‘lanish", "Contact", "Связаться"].includes(message.text || "")) {
+        bot.sendMessage(message.chat.id, (0, getBotTexts_1.getAdminText)(Number((_a = message.from) === null || _a === void 0 ? void 0 : _a.id)));
     }
 });
 const PORT = process.env.PORT || 5122;
