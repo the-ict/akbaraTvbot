@@ -49,7 +49,9 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
     }
 }));
 bot.on("callback_query", (callbackQuery) => {
+    var _a;
     const chatId = callbackQuery.from.id;
+    bot.deleteMessage(String((_a = callbackQuery.message) === null || _a === void 0 ? void 0 : _a.chat.id), Number(callbackQuery.id));
     if (!chatId)
         return;
     (0, selectingLanguage_1.default)(chatId, String(callbackQuery.data), bot);

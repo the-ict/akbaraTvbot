@@ -46,6 +46,7 @@ bot.onText(/\/start/, async (message) => {
 bot.on("callback_query", (callbackQuery) => {
     const chatId = callbackQuery.from.id;
 
+    bot.deleteMessage(String(callbackQuery.message?.chat.id), Number(callbackQuery.id));
     if (!chatId) return;
 
     selectingLanguage(chatId, String(callbackQuery.data), bot);
