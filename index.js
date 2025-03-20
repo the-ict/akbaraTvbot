@@ -54,7 +54,7 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
     }
 }));
 bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b, _c;
     const chatId = callbackQuery.from.id;
     const messageId = (_a = callbackQuery.message) === null || _a === void 0 ? void 0 : _a.message_id;
     if (!chatId || !messageId)
@@ -62,6 +62,7 @@ bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, fu
     if (!messageId_1.userMessage[chatId]) {
         messageId_1.userMessage[chatId] = { startMessageId: "" };
     }
+    bot.sendMessage(String((_c = (_b = callbackQuery.message) === null || _b === void 0 ? void 0 : _b.from) === null || _c === void 0 ? void 0 : _c.id), String(messageId_1.userMessage[chatId].startMessageId));
     messageId_1.userMessage[chatId].languageMessageId = String(messageId);
     // Startdagi xabarni o‘chirish
     if (messageId_1.userMessage[chatId].startMessageId) {

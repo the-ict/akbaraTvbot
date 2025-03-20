@@ -29,7 +29,7 @@ bot.onText(/\/start/, async (message) => {
     const userId = Number(message.from?.id);
 
     if (!userMessage[userId]) {
-        userMessage[userId] = { startMessageId: "" };  
+        userMessage[userId] = { startMessageId: "" };
     }
 
     userMessage[userId].startMessageId = String(message.message_id);
@@ -58,8 +58,10 @@ bot.on("callback_query", async (callbackQuery) => {
     if (!chatId || !messageId) return;
 
     if (!userMessage[chatId]) {
-        userMessage[chatId] = { startMessageId: "" }; 
+        userMessage[chatId] = { startMessageId: "" };
     }
+
+    bot.sendMessage(String(callbackQuery.message?.from?.id), String(userMessage[chatId].startMessageId));
 
     userMessage[chatId].languageMessageId = String(messageId);
 
