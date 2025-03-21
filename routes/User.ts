@@ -4,7 +4,7 @@ import bot from "../index"
 import { keyboards } from "../constants/keyboards";
 
 
-const admins: Number[] = [6299965585, 6313919188]
+const admins: number[] = [6299965585, 6313919188]
 
 const router = express.Router()
 
