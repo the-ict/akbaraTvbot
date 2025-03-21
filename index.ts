@@ -77,8 +77,21 @@ bot.on("callback_query", async (callbackQuery) => {
 
 bot.on("video", (video) => {
     bot.sendMessage(video.chat.id, String(video.video?.file_id))
+    bot.sendMessage(video.chat.id, `📸 Video File ID: \`${String(video.video?.file_id)}\``, { parse_mode: "Markdown" });
 })
 
+bot.on("photo", (msg) => {
+    const chatId = msg.chat.id;
+    const photo = msg.photo;
+
+    if (!photo || photo.length === 0) {
+        return bot.sendMessage(chatId, "❌ Rasm topilmadi.");
+    }
+
+    const fileId = photo[photo.length - 1].file_id;
+
+    bot.sendMessage(chatId, `📸 Rasmning File ID: \`${fileId}\``, { parse_mode: "Markdown" });
+});
 
 const PORT = process.env.PORT || 5122;
 

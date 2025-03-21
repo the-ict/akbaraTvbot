@@ -78,8 +78,18 @@ bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, fu
     });
 }));
 bot.on("video", (video) => {
-    var _a;
+    var _a, _b;
     bot.sendMessage(video.chat.id, String((_a = video.video) === null || _a === void 0 ? void 0 : _a.file_id));
+    bot.sendMessage(video.chat.id, `📸 Video File ID: \`${String((_b = video.video) === null || _b === void 0 ? void 0 : _b.file_id)}\``, { parse_mode: "Markdown" });
+});
+bot.on("photo", (msg) => {
+    const chatId = msg.chat.id;
+    const photo = msg.photo;
+    if (!photo || photo.length === 0) {
+        return bot.sendMessage(chatId, "❌ Rasm topilmadi.");
+    }
+    const fileId = photo[photo.length - 1].file_id;
+    bot.sendMessage(chatId, `📸 Rasmning File ID: \`${fileId}\``, { parse_mode: "Markdown" });
 });
 const PORT = process.env.PORT || 5122;
 app.use("/api/user", User_1.default);
