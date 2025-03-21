@@ -2,9 +2,6 @@ import express, { Request, Response } from "express"
 import User from "../models/User";
 import bot from "../index"
 import { keyboards } from "../constants/keyboards";
-import dotenv from "dotenv"
-
-dotenv.config()
 
 const admins: string[] = process.env.ADMINS ? process.env.ADMINS.split(",") : [];
 
@@ -46,7 +43,7 @@ router.post("/web-app", async (req: Request, res: Response) => {
         if (!newUser) {
             bot.sendMessage(user_id, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername")
         } else {
-            bot.sendMessage(user_id, `Bo't malumotlaringini qabul qildi: ${admins[0]}`)
+            bot.sendMessage(user_id, `npna ${admins[0]}`)
             if (admins?.length > 0) {
                 for (const admin of admins) {
                     await bot.sendMessage(admin, `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`)

@@ -16,8 +16,6 @@ const express_1 = __importDefault(require("express"));
 const User_1 = __importDefault(require("../models/User"));
 const index_1 = __importDefault(require("../index"));
 const keyboards_1 = require("../constants/keyboards");
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
 const admins = process.env.ADMINS ? process.env.ADMINS.split(",") : [];
 const router = express_1.default.Router();
 router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -49,7 +47,7 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             index_1.default.sendMessage(user_id, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername");
         }
         else {
-            index_1.default.sendMessage(user_id, `Bo't malumotlaringini qabul qildi: ${admins[0]}`);
+            index_1.default.sendMessage(user_id, `npna ${admins[0]}`);
             if ((admins === null || admins === void 0 ? void 0 : admins.length) > 0) {
                 for (const admin of admins) {
                     yield index_1.default.sendMessage(admin, `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`);
