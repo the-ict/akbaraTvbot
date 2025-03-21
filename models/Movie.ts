@@ -5,6 +5,9 @@ export interface IMovie extends Document {
     image: string;
     video_url: string;
     trailer_url: string;
+    searchId: number;
+    srcLink: string,
+    srcName: string
 }
 
 const MovieSchema: Schema = new mongoose.Schema({
@@ -21,6 +24,18 @@ const MovieSchema: Schema = new mongoose.Schema({
         required: true
     },
     trailer_url: {
+        type: String,
+        required: true
+    },
+    searchId: {
+        type: Number,
+        required: true
+    },
+    srcLink: {
+        type: String,
+        required: true
+    },
+    srcName: {
         type: String,
         required: true
     }

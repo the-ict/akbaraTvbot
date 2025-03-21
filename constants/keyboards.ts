@@ -1,33 +1,26 @@
 import { InlineKeyboardMarkup, ReplyKeyboardMarkup } from "node-telegram-bot-api";
-import getSignInText from "../functions/getSignInText";
-import { getMenuKeyboardsText, getTopFilmsText } from "../functions/getBotTexts"
 
 interface IKeyboards {
-    startKeyboard: InlineKeyboardMarkup;
-    signinKeyboard: (chatId: number) => InlineKeyboardMarkup;
-    menuKeyboards: (userId: number) => ReplyKeyboardMarkup;
-    topFilms: (userId: number) => InlineKeyboardMarkup;
+    signinKeyboard: InlineKeyboardMarkup;
+    menuKeyboards: ReplyKeyboardMarkup;
+    topFilms: InlineKeyboardMarkup;
 }
 
 export const keyboards: IKeyboards = {
-    startKeyboard: {
-        inline_keyboard: [
-            [
-                { text: "Uz 🇺🇿", callback_data: "uz" },
-                { text: "En 🇺🇸", callback_data: "en" },
-                { text: "Ru 🇷🇺", callback_data: "ru" },
-            ],
+    signinKeyboard: {
+        inline_keyboard: [[{ text: "Ro'yhatdan o'tish", web_app: { url: "https://akbara-input-form.vercel.app/" } }]]
+    },
+    menuKeyboards: {
+        keyboard: [
+            [{ text: "Top filmlar" }, { text: "Bog‘lanish" }],
         ],
+        resize_keyboard: true,
     },
-    signinKeyboard: (chatId) => {
-        return {
-            inline_keyboard: [[{ text: String(getSignInText(chatId)), web_app: { url: "https://akbara-input-form.vercel.app/" } }]]
-        };
-    },
-    menuKeyboards: (userId): ReplyKeyboardMarkup => {
-        return getMenuKeyboardsText(userId)
-    },
-    topFilms: (userId): InlineKeyboardMarkup => {
-        return getTopFilmsText(userId)
+    topFilms: {
+        inline_keyboard: [
+            [{ text: "1. 3 Idiots", callback_data: "?movie=1" }],
+            [{ text: "2. Bahubali", callback_data: "?movie=3" }],
+            [{ text: "3. KGF Chapter 2", callback_data: "?moive=3" }]
+        ],
     }
 };

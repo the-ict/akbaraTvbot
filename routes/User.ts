@@ -1,13 +1,11 @@
 import express, { Request, Response } from "express"
-import { WebAppRequestBody } from "../constants/types";
 import User from "../models/User";
 import bot from "../index"
-import { getQueryText, getSaveErrorText } from "../functions/getBotTexts";
 import { keyboards } from "../constants/keyboards";
 
 const router = express.Router()
 
-router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Response) => {
+router.post("/web-app", async (req: Request, res: Response) => {
     try {
         const { query_id, user_id, lastName, name, phone, country, districts, region } = req.body;
 
@@ -16,12 +14,11 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
             return;
         }
 
-        const messageText = getQueryText(user_id) || "OK!";
+        const messageText = "Siz ro'yhatdan o'tingiz"
 
         bot.sendMessage(user_id, `${messageText}: ${name}`, {
-            reply_markup: keyboards.menuKeyboards(user_id)
+            reply_markup: keyboards.menuKeyboards
         })
-
 
 
         let newUserData = {
@@ -42,7 +39,7 @@ router.post("/web-app", async (req: Request<{}, {}, WebAppRequestBody>, res: Res
         const newUser = await User.create(newUserData)
 
         if (!newUser) {
-            bot.sendMessage(user_id, getSaveErrorText(user_id))
+            bot.sendMessage(user_id, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername")
         }
 
         res.status(200).json({ message: "User malumotlari serverga saqlandi !" })

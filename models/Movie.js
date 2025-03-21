@@ -20,6 +20,18 @@ const MovieSchema = new mongoose_1.default.Schema({
     trailer_url: {
         type: String,
         required: true
+    },
+    searchId: {
+        type: Number,
+        required: true
+    },
+    srcLink: {
+        type: String,
+        required: true
+    },
+    srcName: {
+        type: String,
+        required: true
     }
 }, { timestamps: true });
 const Movie = mongoose_1.default.model("Movie", MovieSchema);

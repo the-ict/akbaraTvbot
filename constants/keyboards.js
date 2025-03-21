@@ -1,30 +1,21 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.keyboards = void 0;
-const getSignInText_1 = __importDefault(require("../functions/getSignInText"));
-const getBotTexts_1 = require("../functions/getBotTexts");
 exports.keyboards = {
-    startKeyboard: {
-        inline_keyboard: [
-            [
-                { text: "Uz 🇺🇿", callback_data: "uz" },
-                { text: "En 🇺🇸", callback_data: "en" },
-                { text: "Ru 🇷🇺", callback_data: "ru" },
-            ],
+    signinKeyboard: {
+        inline_keyboard: [[{ text: "Ro'yhatdan o'tish", web_app: { url: "https://akbara-input-form.vercel.app/" } }]]
+    },
+    menuKeyboards: {
+        keyboard: [
+            [{ text: "Top filmlar" }, { text: "Bog‘lanish" }],
         ],
+        resize_keyboard: true,
     },
-    signinKeyboard: (chatId) => {
-        return {
-            inline_keyboard: [[{ text: String((0, getSignInText_1.default)(chatId)), web_app: { url: "https://akbara-input-form.vercel.app/" } }]]
-        };
-    },
-    menuKeyboards: (userId) => {
-        return (0, getBotTexts_1.getMenuKeyboardsText)(userId);
-    },
-    topFilms: (userId) => {
-        return (0, getBotTexts_1.getTopFilmsText)(userId);
+    topFilms: {
+        inline_keyboard: [
+            [{ text: "1. 3 Idiots", callback_data: "?movie=1" }],
+            [{ text: "2. Bahubali", callback_data: "?movie=3" }],
+            [{ text: "3. KGF Chapter 2", callback_data: "?moive=3" }]
+        ],
     }
 };

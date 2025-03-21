@@ -1,1 +1,0 @@
-export let userState: { [chatId: number]: { lang: string } } = {};

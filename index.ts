@@ -1,7 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
-import { messages } from "./constants/messages";
 import { keyboards } from "./constants/keyboards";
-import selectingLanguage from "./actions/selectingLanguage";
 import express from "express";
 import { Express } from "express";
 import cors from "cors";
@@ -9,11 +7,12 @@ import dotenv from "dotenv";
 import { connectDb } from "./config/connect";
 import User from "./routes/User";
 import topFilms from "./handlers/topFilms";
-import { userState } from "./states/language";
-import { userMessage } from "./states/messageId";
-import { getAdminText, loggedInStartTexts, secondStartText } from "./functions/getBotTexts";
 import UserModel from "./models/User";
-import changeLan from "./handlers/changeLan";
+import getMovieInfo from "./handlers/getMovieInfo";
+import Movie from "./routes/Movie"
+import getWatch from "./handlers/getWatch";
+import getMovieWithId from "./handlers/getMovieWithId";
+
 
 const app: Express = express();
 
@@ -29,63 +28,58 @@ bot.deleteWebHook();
 bot.onText(/\/start/, async (message) => {
     const userId = Number(message.from?.id);
 
-    if (!userMessage[userId]) {
-        userMessage[userId] = { startMessageId: "" };
-    }
-
     const user = await UserModel.findOne({ telegram_id: userId });
 
-    if (userState[userId]) {
-        if (user) {
-            return bot.sendMessage(message.chat.id, loggedInStartTexts(userId), {
-                reply_markup: keyboards.menuKeyboards(userId)
-            });
-        }
-
-        const sentMessage = await bot.sendMessage(message.chat.id, secondStartText(userId), {
-            reply_markup: keyboards.signinKeyboard(userId)
+    if (user) {
+        return bot.sendMessage(message.chat.id, "✅ Siz allaqachon ro'yhatdan o'tgansiz!\n\nEndi botdan to'liq foydalana olasiz.", {
+            reply_markup: keyboards.menuKeyboards
         });
-
-        userMessage[userId].startMessageId = String(sentMessage.message_id);
     } else {
-        const sentMessage = await bot.sendMessage(
-            message.chat.id,
-            messages.startCommand(String(message.chat.username)),
-            { reply_markup: keyboards.startKeyboard }
-        );
+        return bot.sendMessage(message.chat.id, `@${message.from?.username}\nAssalomu Alaykum\n\nRo'yhatdan o'ting!`, {
+            reply_markup: keyboards.signinKeyboard
+        })
+    }
+});
 
-        userMessage[userId].startMessageId = String(sentMessage.message_id);
+bot.on("message", (message) => {
+    if (["Top filmlar"].includes(message.text || "")) {
+        topFilms(message);
+    }
+
+    else if (["Bog‘lanish"].includes(message.text || "")) {
+        bot.sendMessage(message.chat.id, "Admin judaham band")
+    }
+
+    if (!isNaN(Number(message.text))) {
+        getMovieWithId(message)
     }
 });
 
 bot.on("callback_query", async (callbackQuery) => {
     const chatId = callbackQuery.from.id;
     const messageId = callbackQuery.message?.message_id;
+    console.log(callbackQuery.data?.split("=")[1], "splitted data")
 
+
+    if (callbackQuery.data?.split("=")[0] === "?w") {
+        getWatch(callbackQuery, callbackQuery.data?.split("=")[1])
+    }
+    else if (callbackQuery.data?.split("=")[1]) {
+        getMovieInfo(callbackQuery)
+    }
     if (!chatId || !messageId) return;
-
-    if (!userMessage[chatId]) {
-        userMessage[chatId] = { startMessageId: "" };
-    }
-
-    selectingLanguage(chatId, String(callbackQuery.data), bot);
 });
 
-bot.on("message", (message) => {
-    if (["Top filmlar", "Top movies", "Лучшие фильмы"].includes(message.text || "")) {
-        topFilms(message);
-    }
 
-    else if (["Tilni o'zgartirish", "Change language", "Изменить язык", "/setlan"].includes(message.text || "")) {
-        changeLan(message)
-    } else if (["Bog‘lanish", "Contact", "Связаться"].includes(message.text || "")) {
-        bot.sendMessage(message.chat.id, getAdminText(Number(message.from?.id)))
-    }
-});
+bot.on("video", (video) => {
+    bot.sendMessage(video.chat.id, String(video.video?.file_id))
+})
+
 
 const PORT = process.env.PORT || 5122;
 
 app.use("/api/user", User);
+app.use("/api/movie", Movie)
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

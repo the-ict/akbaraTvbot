@@ -15,31 +15,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
 const index_1 = __importDefault(require("../index"));
 const Movie_1 = __importDefault(require("../models/Movie"));
-// callback olish uni moslash
-function default_1(callback) {
+function default_1(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b, _c;
+        const chatId = String(message.chat.id);
         try {
-            const movieName = (_a = callback.data) === null || _a === void 0 ? void 0 : _a.split("=")[1];
-            const MovieInfo = yield Movie_1.default.findOne({ searchId: movieName });
-            if (!MovieInfo) {
-                index_1.default.sendMessage(String((_b = callback.message) === null || _b === void 0 ? void 0 : _b.chat.id), "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername");
-            }
-            else {
-                index_1.default.sendPhoto((_c = callback.message) === null || _c === void 0 ? void 0 : _c.chat.id, MovieInfo.image, {
-                    caption: `<b>${MovieInfo.title}</b>\n\n\n<b>manba:</b> <a href="${MovieInfo.srcLink ? MovieInfo.srcLink : "http://asilmedia.org/"}">${MovieInfo.srcName ? MovieInfo.srcName : "Asilmedia.uz"}</a>`,
+            const movie = yield Movie_1.default.findOne({ searchId: message.text });
+            if (movie) {
+                index_1.default.sendPhoto(chatId, movie.image, {
+                    caption: `<b>${movie.title}</b>\n\n\n<b>manba:</b> <a href="${movie.srcLink ? movie.srcLink : "http://asilmedia.org/"}">${movie.srcName ? movie.srcName : "Asilmedia.uz"}</a>`,
                     parse_mode: "HTML",
                     reply_markup: {
                         inline_keyboard: [[
-                                { text: "Trailerni ko'rish", url: MovieInfo.trailer_url }
+                                { text: "Trailerni ko'rish", url: movie.trailer_url }
                             ],
-                            [{ text: "Kinoni ko'rish", callback_data: `?w=${MovieInfo._id}` }]]
+                            [{ text: "Kinoni ko'rish", callback_data: `?w=${movie._id}` }]]
                     }
                 });
             }
         }
         catch (error) {
-            console.log(error);
         }
     });
 }

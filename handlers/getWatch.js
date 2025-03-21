@@ -12,22 +12,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = default_1;
+const index_1 = __importDefault(require("../index"));
 const Movie_1 = __importDefault(require("../models/Movie"));
-const express_1 = __importDefault(require("express"));
-const router = express_1.default.Router();
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const movies = yield Movie_1.default.find();
-        const newMovie = yield Movie_1.default.create(Object.assign(Object.assign({}, req.body), { searchId: movies.length + 1 }));
-        if (newMovie) {
-            res.status(200).json(newMovie);
+function default_1(callback, movieId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a;
+        const chatId = String((_a = callback.message) === null || _a === void 0 ? void 0 : _a.chat.id);
+        try {
+            const movie = yield Movie_1.default.findById(movieId);
+            if (!movie) {
+                index_1.default.sendMessage(chatId, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername");
+            }
+            else {
+                index_1.default.sendVideo(chatId, movie.video_url, {
+                    caption: movie.title,
+                    parse_mode: "HTML"
+                });
+            }
         }
-        else {
-            res.status(304).json({ message: "Wrong informations" });
+        catch (error) {
+            index_1.default.sendMessage(chatId, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername");
         }
-    }
-    catch (error) {
-        res.status(500).json(error);
-    }
-}));
-exports.default = router;
+    });
+}

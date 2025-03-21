@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const User_1 = __importDefault(require("../models/User"));
 const index_1 = __importDefault(require("../index"));
-const getBotTexts_1 = require("../functions/getBotTexts");
 const keyboards_1 = require("../constants/keyboards");
 const router = express_1.default.Router();
 router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,9 +24,9 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             res.status(400).json({ error: "Zaruriy ma'lumotlar yetishmayapti." });
             return;
         }
-        const messageText = (0, getBotTexts_1.getQueryText)(user_id) || "OK!";
+        const messageText = "Siz ro'yhatdan o'tingiz";
         index_1.default.sendMessage(user_id, `${messageText}: ${name}`, {
-            reply_markup: keyboards_1.keyboards.menuKeyboards(user_id)
+            reply_markup: keyboards_1.keyboards.menuKeyboards
         });
         let newUserData = {
             name,
@@ -44,7 +43,7 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         const newUser = yield User_1.default.create(newUserData);
         if (!newUser) {
-            index_1.default.sendMessage(user_id, (0, getBotTexts_1.getSaveErrorText)(user_id));
+            index_1.default.sendMessage(user_id, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername");
         }
         res.status(200).json({ message: "User malumotlari serverga saqlandi !" });
     }
