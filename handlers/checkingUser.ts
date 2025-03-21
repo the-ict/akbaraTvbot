@@ -11,7 +11,7 @@ export default async function (message: CallbackQuery | Message, callback: Funct
         const user = await User.findOne({ telegram_id: userId });
 
         if (user) {
-            callback();  
+            callback();
         } else {
             bot.sendMessage(chatId, "Siz hali ro'yhatdan o'tmadingiz\n\nBotdan ham foydalana olmaysiz. Iltimos ro'yhatdan o'ting.", {
                 reply_markup: keyboards.signinKeyboard
