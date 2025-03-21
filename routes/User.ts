@@ -47,7 +47,7 @@ router.post("/web-app", async (req: Request, res: Response) => {
             bot.sendMessage(user_id, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername")
         } else {
             if (admins?.length > 0) {
-                for (const admin in admins) {
+                for (const admin of admins) {
                     await bot.sendMessage(admin, `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`)
                 }
             }
