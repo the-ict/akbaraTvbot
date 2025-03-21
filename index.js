@@ -49,6 +49,8 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
     }
 }));
 bot.on("message", (message) => {
+    if (message.text === "/start")
+        return;
     (0, checkingUser_1.default)(message, () => {
         if (["Top filmlar"].includes(message.text || "")) {
             (0, topFilms_1.default)(message);
@@ -78,9 +80,8 @@ bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, fu
     });
 }));
 bot.on("video", (video) => {
-    var _a, _b;
-    bot.sendMessage(video.chat.id, String((_a = video.video) === null || _a === void 0 ? void 0 : _a.file_id));
-    bot.sendMessage(video.chat.id, `📸 Video File ID: \`${String((_b = video.video) === null || _b === void 0 ? void 0 : _b.file_id)}\``, { parse_mode: "Markdown" });
+    var _a;
+    bot.sendMessage(video.chat.id, `📸 Video File ID: \`${String((_a = video.video) === null || _a === void 0 ? void 0 : _a.file_id)}\``, { parse_mode: "Markdown" });
 });
 bot.on("photo", (msg) => {
     const chatId = msg.chat.id;

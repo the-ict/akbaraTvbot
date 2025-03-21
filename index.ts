@@ -43,6 +43,7 @@ bot.onText(/\/start/, async (message) => {
 });
 
 bot.on("message", (message) => {
+    if (message.text === "/start") return
     checkingUser(message, () => {
         if (["Top filmlar"].includes(message.text || "")) {
             topFilms(message);
@@ -76,7 +77,6 @@ bot.on("callback_query", async (callbackQuery) => {
 
 
 bot.on("video", (video) => {
-    bot.sendMessage(video.chat.id, String(video.video?.file_id))
     bot.sendMessage(video.chat.id, `📸 Video File ID: \`${String(video.video?.file_id)}\``, { parse_mode: "Markdown" });
 })
 
