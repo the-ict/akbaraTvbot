@@ -25,6 +25,7 @@ const getMovieInfo_1 = __importDefault(require("./handlers/getMovieInfo"));
 const Movie_1 = __importDefault(require("./routes/Movie"));
 const getWatch_1 = __importDefault(require("./handlers/getWatch"));
 const getMovieWithId_1 = __importDefault(require("./handlers/getMovieWithId"));
+const checkingUser_1 = __importDefault(require("./handlers/checkingUser"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -48,29 +49,33 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
     }
 }));
 bot.on("message", (message) => {
-    if (["Top filmlar"].includes(message.text || "")) {
-        (0, topFilms_1.default)(message);
-    }
-    else if (["Bog‘lanish"].includes(message.text || "")) {
-        bot.sendMessage(message.chat.id, "Admin judaham band");
-    }
-    if (!isNaN(Number(message.text))) {
-        (0, getMovieWithId_1.default)(message);
-    }
+    (0, checkingUser_1.default)(message, () => {
+        if (["Top filmlar"].includes(message.text || "")) {
+            (0, topFilms_1.default)(message);
+        }
+        else if (["Bog‘lanish"].includes(message.text || "")) {
+            bot.sendMessage(message.chat.id, "Admin judaham band");
+        }
+        if (!isNaN(Number(message.text))) {
+            (0, getMovieWithId_1.default)(message);
+        }
+    });
 });
 bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e;
+    var _a;
     const chatId = callbackQuery.from.id;
     const messageId = (_a = callbackQuery.message) === null || _a === void 0 ? void 0 : _a.message_id;
-    console.log((_b = callbackQuery.data) === null || _b === void 0 ? void 0 : _b.split("=")[1], "splitted data");
-    if (((_c = callbackQuery.data) === null || _c === void 0 ? void 0 : _c.split("=")[0]) === "?w") {
-        (0, getWatch_1.default)(callbackQuery, (_d = callbackQuery.data) === null || _d === void 0 ? void 0 : _d.split("=")[1]);
-    }
-    else if ((_e = callbackQuery.data) === null || _e === void 0 ? void 0 : _e.split("=")[1]) {
-        (0, getMovieInfo_1.default)(callbackQuery);
-    }
-    if (!chatId || !messageId)
+    if (!chatId && !messageId)
         return;
+    (0, checkingUser_1.default)(callbackQuery, () => {
+        var _a, _b, _c;
+        if (((_a = callbackQuery.data) === null || _a === void 0 ? void 0 : _a.split("=")[0]) === "?w") {
+            (0, getWatch_1.default)(callbackQuery, (_b = callbackQuery.data) === null || _b === void 0 ? void 0 : _b.split("=")[1]);
+        }
+        else if ((_c = callbackQuery.data) === null || _c === void 0 ? void 0 : _c.split("=")[1]) {
+            (0, getMovieInfo_1.default)(callbackQuery);
+        }
+    });
 }));
 bot.on("video", (video) => {
     var _a;

@@ -12,6 +12,7 @@ import getMovieInfo from "./handlers/getMovieInfo";
 import Movie from "./routes/Movie"
 import getWatch from "./handlers/getWatch";
 import getMovieWithId from "./handlers/getMovieWithId";
+import checkingUser from "./handlers/checkingUser";
 
 
 const app: Express = express();
@@ -42,32 +43,35 @@ bot.onText(/\/start/, async (message) => {
 });
 
 bot.on("message", (message) => {
-    if (["Top filmlar"].includes(message.text || "")) {
-        topFilms(message);
-    }
+    checkingUser(message, () => {
+        if (["Top filmlar"].includes(message.text || "")) {
+            topFilms(message);
+        }
 
-    else if (["Bog‘lanish"].includes(message.text || "")) {
-        bot.sendMessage(message.chat.id, "Admin judaham band")
-    }
+        else if (["Bog‘lanish"].includes(message.text || "")) {
+            bot.sendMessage(message.chat.id, "Admin judaham band")
+        }
 
-    if (!isNaN(Number(message.text))) {
-        getMovieWithId(message)
-    }
+        if (!isNaN(Number(message.text))) {
+            getMovieWithId(message)
+        }
+    })
 });
 
 bot.on("callback_query", async (callbackQuery) => {
     const chatId = callbackQuery.from.id;
     const messageId = callbackQuery.message?.message_id;
-    console.log(callbackQuery.data?.split("=")[1], "splitted data")
+    if (!chatId && !messageId) return
+    checkingUser(callbackQuery, () => {
 
+        if (callbackQuery.data?.split("=")[0] === "?w") {
+            getWatch(callbackQuery, callbackQuery.data?.split("=")[1])
+        }
+        else if (callbackQuery.data?.split("=")[1]) {
+            getMovieInfo(callbackQuery)
+        }
+    })
 
-    if (callbackQuery.data?.split("=")[0] === "?w") {
-        getWatch(callbackQuery, callbackQuery.data?.split("=")[1])
-    }
-    else if (callbackQuery.data?.split("=")[1]) {
-        getMovieInfo(callbackQuery)
-    }
-    if (!chatId || !messageId) return;
 });
 
 

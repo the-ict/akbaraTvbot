@@ -16,6 +16,5 @@ export default async function (callback: CallbackQuery, movieId: string) {
         }
     } catch (error) {
         bot.sendMessage(chatId, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername")
-
     }
 }
