@@ -47,7 +47,6 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             index_1.default.sendMessage(user_id, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername");
         }
         else {
-            index_1.default.sendMessage(user_id, `npna ${admins[0]}`);
             if ((admins === null || admins === void 0 ? void 0 : admins.length) > 0) {
                 for (const admin of admins) {
                     yield index_1.default.sendMessage(String(admin), `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`);
