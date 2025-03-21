@@ -31,7 +31,11 @@ function default_1(callback) {
                     parse_mode: "HTML",
                     reply_markup: {
                         inline_keyboard: [[
-                                { text: "Trailerni ko'rish", url: MovieInfo.trailer_url }
+                                {
+                                    text: "Trailerni ko'rish", web_app: {
+                                        url: MovieInfo.trailer_url
+                                    }
+                                }
                             ],
                             [{ text: "Kinoni ko'rish", callback_data: `?w=${MovieInfo._id}` }]]
                     }
