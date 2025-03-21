@@ -16,7 +16,7 @@ const express_1 = __importDefault(require("express"));
 const User_1 = __importDefault(require("../models/User"));
 const index_1 = __importDefault(require("../index"));
 const keyboards_1 = require("../constants/keyboards");
-const admins = process.env.ADMINS ? process.env.ADMINS.split(",") : [];
+const admins = [6299965585, 6313919188];
 const router = express_1.default.Router();
 router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -50,7 +50,7 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             index_1.default.sendMessage(user_id, `npna ${admins[0]}`);
             if ((admins === null || admins === void 0 ? void 0 : admins.length) > 0) {
                 for (const admin of admins) {
-                    yield index_1.default.sendMessage(admin, `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`);
+                    yield index_1.default.sendMessage(String(admin), `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`);
                 }
             }
             res.status(200).json({ message: "User malumotlari serverga saqlandi !" });

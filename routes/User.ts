@@ -3,7 +3,8 @@ import User from "../models/User";
 import bot from "../index"
 import { keyboards } from "../constants/keyboards";
 
-const admins: string[] = process.env.ADMINS ? process.env.ADMINS.split(",") : [];
+
+const admins: Number[] = [6299965585, 6313919188]
 
 const router = express.Router()
 
@@ -46,7 +47,7 @@ router.post("/web-app", async (req: Request, res: Response) => {
             bot.sendMessage(user_id, `npna ${admins[0]}`)
             if (admins?.length > 0) {
                 for (const admin of admins) {
-                    await bot.sendMessage(admin, `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`)
+                    await bot.sendMessage(String(admin), `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`)
                 }
             }
             res.status(200).json({ message: "User malumotlari serverga saqlandi !" })
