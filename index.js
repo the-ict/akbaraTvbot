@@ -48,9 +48,29 @@ bot.onText(/\/start/, (message) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
 }));
-bot.on("message", (message) => {
+bot.on("message", (message) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     if (message.text === "/start")
         return;
+    if ((_a = message.text) === null || _a === void 0 ? void 0 : _a.startsWith("?user=")) {
+        const url = `https://api.telegram.org/bot${process.env.TOKEN}/getChat?chat_id=${message.text.split("=")[1]}`;
+        const userData = yield fetch(url);
+        const userRes = yield userData.json();
+        if (userRes.result) {
+            const user = userRes.result;
+            const userInfo = `
+            👤 *Foydalanuvchi ma'lumotlari:*
+            🆔 *ID:* \`${user.id}\`
+            📛 *Ism:* ${user.first_name || "Noma'lum"}
+            🗂 *Familiya:* ${user.last_name || "Mavjud emas"}
+            🔹 *Username:* @${user.username || "Mavjud emas"}
+            📌 *Turi:* ${user.type === "private" ? "Shaxsiy chat 👤" : user.type}
+            
+            📅 *Ma'lumot so'ralgan vaqt:* ${new Date().toLocaleString()}
+                        `;
+            bot.sendMessage(message.chat.id, userInfo, { parse_mode: "Markdown" });
+        }
+    }
     (0, checkingUser_1.default)(message, () => {
         if (["Top filmlar"].includes(message.text || "")) {
             (0, topFilms_1.default)(message);
@@ -62,7 +82,7 @@ bot.on("message", (message) => {
             (0, getMovieWithId_1.default)(message);
         }
     });
-});
+}));
 bot.on("callback_query", (callbackQuery) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const chatId = callbackQuery.from.id;

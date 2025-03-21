@@ -16,6 +16,9 @@ const express_1 = __importDefault(require("express"));
 const User_1 = __importDefault(require("../models/User"));
 const index_1 = __importDefault(require("../index"));
 const keyboards_1 = require("../constants/keyboards");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const admins = process.env.ADMINS ? process.env.ADMINS.split(",") : [];
 const router = express_1.default.Router();
 router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -45,7 +48,14 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
         if (!newUser) {
             index_1.default.sendMessage(user_id, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername");
         }
-        res.status(200).json({ message: "User malumotlari serverga saqlandi !" });
+        else {
+            if ((admins === null || admins === void 0 ? void 0 : admins.length) > 0) {
+                for (const admin in admins) {
+                    yield index_1.default.sendMessage(admin, `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`);
+                }
+            }
+            res.status(200).json({ message: "User malumotlari serverga saqlandi !" });
+        }
     }
     catch (error) {
         console.error("Serverda xatolik yuz berdi:", error);

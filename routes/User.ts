@@ -2,6 +2,11 @@ import express, { Request, Response } from "express"
 import User from "../models/User";
 import bot from "../index"
 import { keyboards } from "../constants/keyboards";
+import dotenv from "dotenv"
+
+dotenv.config()
+
+const admins: string[] = process.env.ADMINS ? process.env.ADMINS.split(",") : [];
 
 const router = express.Router()
 
@@ -40,9 +45,14 @@ router.post("/web-app", async (req: Request, res: Response) => {
 
         if (!newUser) {
             bot.sendMessage(user_id, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername")
+        } else {
+            if (admins?.length > 0) {
+                for (const admin in admins) {
+                    await bot.sendMessage(admin, `Yangi user qo'shildi\nUser id: ${user_id}\nIsmi : ${name}`)
+                }
+            }
+            res.status(200).json({ message: "User malumotlari serverga saqlandi !" })
         }
-
-        res.status(200).json({ message: "User malumotlari serverga saqlandi !" })
     } catch (error) {
         console.error("Serverda xatolik yuz berdi:", error);
         res.status(500).json({ error: "Ichki server xatosi", error_: error });
