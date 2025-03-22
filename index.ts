@@ -48,20 +48,23 @@ bot.on("message", async (message) => {
         const url = `https://api.telegram.org/bot${process.env.TOKEN}/getChat?chat_id=${message.text.split("=")[1]}`
         const userData = await fetch(url)
         const userRes = await userData.json()
-        if (userRes.result) {
+
+        if (userRes.ok) {
             const user = userRes.result;
             const userInfo = `
-            👤 *Foydalanuvchi ma'lumotlari:*
-            🆔 *ID:* \`${user.id}\`
-            📛 *Ism:* ${user.first_name || "Noma'lum"}
-            🗂 *Familiya:* ${user.last_name || "Mavjud emas"}
-            🔹 *Username:* @${user.username || "Mavjud emas"}
-            📌 *Turi:* ${user.type === "private" ? "Shaxsiy chat 👤" : user.type}
-            
-            📅 *Ma'lumot so'ralgan vaqt:* ${new Date().toLocaleString()}
-                        `;
+Foydalanuvchi haqida malumot:
+
+ID: \`${user.id}\`, 
+Ism: ${user.first_name || "Noma'lum"}, 
+Familiya: ${user.last_name || "Mavjud emas"}, 
+Username: @${user.username || "Mavjud emas"}, 
+Turi: ${user.type === "private" ? "Shaxsiy chat 👤" : user.type}, 
+Ma'lumot so'ralgan vaqt: ${new Date().toLocaleString()}
+`;
 
             bot.sendMessage(message.chat.id, userInfo, { parse_mode: "Markdown" });
+
+
         }
     }
     checkingUser(message, () => {
