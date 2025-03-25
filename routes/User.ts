@@ -12,7 +12,7 @@ router.post("/web-app", async (req: Request, res: Response) => {
     try {
         const { query_id, user_id, lastName, name, phone, country, districts, region } = req.body;
 
-        if (!query_id || !user_id || !name || !phone || !country) {
+        if (!query_id || !user_id || !name || !phone || !country || !districts || !region) {
             res.status(400).json({ error: "Zaruriy ma'lumotlar yetishmayapti." });
             return;
         }
@@ -29,14 +29,9 @@ router.post("/web-app", async (req: Request, res: Response) => {
             lastName,
             phone,
             country,
-            region: "",
-            districts: "",
+            region,
+            districts,
             telegram_id: user_id
-        }
-
-        if (region && districts) {
-            newUserData.region = region
-            newUserData.districts = districts
         }
 
         const newUser = await User.create(newUserData)
