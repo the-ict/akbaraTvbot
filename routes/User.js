@@ -21,7 +21,7 @@ const router = express_1.default.Router();
 router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { query_id, user_id, lastName, name, phone, country, districts, region } = req.body;
-        if (!query_id || !user_id || !name || !phone || !country) {
+        if (!query_id || !user_id || !name || !phone || !country || !districts || !region) {
             res.status(400).json({ error: "Zaruriy ma'lumotlar yetishmayapti." });
             return;
         }
@@ -34,14 +34,10 @@ router.post("/web-app", (req, res) => __awaiter(void 0, void 0, void 0, function
             lastName,
             phone,
             country,
-            region: "",
-            districts: "",
+            region,
+            districts,
             telegram_id: user_id
         };
-        if (region && districts) {
-            newUserData.region = region;
-            newUserData.districts = districts;
-        }
         const newUser = yield User_1.default.create(newUserData);
         if (!newUser) {
             index_1.default.sendMessage(user_id, "Botda xatolik mavjud\nIltimos adminga bu xato to'g'risida malumot bering @adminusername");
